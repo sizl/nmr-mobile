@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>nomorerack</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+	<![endif]-->
+
+    <link rel="stylesheet" href="/css/nomorerack-global.css" />
+
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <script src="/js/nomorerack.js"></script>
+
+    {% block scripts %}{% endblock %}
+
+</head>
+<body>
+
+<div id="header">
+    <h1>NOMORERACK</h1>
+</div>
+
+<div id="content" class="ui-content">
+    {% block body %}{% endblock %}
+</div>
+
+<div id="footer" data-role="footer">
+    Footer
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        NMR.init();
+
+        {% block document_ready %}{% endblock %}
+    });
+</script>
+</body>
+</html>

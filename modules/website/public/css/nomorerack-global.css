@@ -1,0 +1,175 @@
+/* Header Styles */
+/*************************************************************************/
+
+#header {
+    background-image: url("/images/header/logo.jpg");
+    background-repeat: no-repeat;
+    background-size: 131px 39px;
+    background-position: 50% -3px;
+    height: 44px;
+}
+
+#header.ui-fixed-hidden {
+    top: -1px;
+    padding-top: 1px;
+}
+
+#nav-menu-btn, #nav-search-btn {
+    background: transparent;
+    border-color: transparent;
+}
+
+/* Search Styles */
+/*************************************************************************/
+
+#search-panel {
+    height: 49px;
+    background-color: rgb(78, 78, 78);
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    z-index: 1000;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    top: -110px;
+    transition: top .52s;
+    padding: 5px 10px;
+}
+
+#search-panel.opened {
+    top: 44px;
+}
+
+#search-panel.opened .ui-input-search {
+    border-color: transparent;
+    font-size: 15px;
+    box-shadow: none;
+}
+
+#search-panel.opened .ui-input-search.ui-focus {
+
+}
+
+/* Category Filter Styles */
+/*************************************************************************/
+
+#category-filter {
+    padding: 0 .3em;
+}
+
+#category-filter .ui-select > div {
+    font-size: 1.1em;
+    padding: .5em 1em;
+}
+
+#category-filter .ui-input-search.ui-focus,
+#category-filter .ui-select > div.ui-focus {
+    box-shadow: none;
+}
+
+/* Nav Panel Styles */
+/*************************************************************************/
+#nav-panel {
+    background-color: #444444;
+}
+
+/* Basic settings */
+#nav-panel .ui-li-static.ui-collapsible {
+    padding: 0;
+}
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-heading {
+    margin: 0;
+}
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    border-bottom-width: 0;
+}
+/* collapse vertical borders */
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-last-child,
+#nav-panel .ui-li-static.ui-collapsible.ui-collapsible-collapsed > .ui-collapsible-heading > a.ui-btn {
+    border-bottom-width: 0;
+}
+#nav-panel .ui-listview > li.ui-first-child{
+    border-top-width: 0;
+}
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-first-child,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-first-child > a.ui-btn,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn {
+    border-top-width: 0;
+}
+
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li > a.ui-btn {
+    border-bottom-width: 1px;
+    border-bottom-color: #000;
+    color: #f1f1f1;
+}
+
+/* Remove right borders */
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > .ui-li-static,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li > a.ui-btn,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content {
+    border-right-width: 0;
+}
+
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content {
+    padding: 0;
+}
+
+#nav-panel a.ui-btn,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn {
+    background-color: #444;
+    border-color: #383838;
+    color: #f1f1f1;
+    text-shadow: 0 0 0 #000;
+    font-weight: normal;
+}
+
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content a.ui-btn {
+    border-left: none;
+    border-right: none;
+    background-color: #333;
+    padding-left: 25px;
+}
+
+/*.ui-panel-dismiss-open {*/
+    /*box-shadow: -5px -1px 20px #000;*/
+/*}*/
+
+
+/* Remove left borders */
+/* Here, we need class ui-listview-outer to identify the outermost listview */
+#nav-panel .ui-listview-outer > .ui-li-static.ui-collapsible .ui-li-static.ui-collapsible.ui-collapsible,
+#nav-panel .ui-listview-outer > .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn,
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content {
+    border-left-width: 0;
+}
+
+
+/* Content Styles */
+/*************************************************************************/
+#content {
+    padding: .2em;
+}
+
+/* Grid Styles */
+/*************************************************************************/
+
+.grid .grid-cell {
+    background-color: white;
+    box-shadow: 1px 1px 1px rgba(0,0,0,.1);
+    display: inline-block;
+    width: 152px;
+    margin-bottom: 6px;
+    height: 293px;
+}
+
+.grid .grid-image {
+    display: block;
+    margin: 4px;
+    height: 148px;
+    background: #F7F7F7;
+}

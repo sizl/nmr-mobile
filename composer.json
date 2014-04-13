@@ -6,8 +6,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Nmr\\": "library/",
-            "NmrController\\": "app/controllers/"
+            "Nmr\\": "library/Nmr/",
+            "Nmr\\Mobile\\": "modules/mobile/"
         }
     }
 }
