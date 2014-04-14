@@ -1,0 +1,78 @@
+{% extends "layouts/default.html" %}
+
+{% block scripts %}
+<script src="/js/pdp.js"></script>
+{% endblock %}
+
+{% block body %}
+
+{% include 'partials/headers/main-header.html' %}
+
+<div id="content" class="detail-view-container ui-content">
+    <div class="product-details">
+        <div class="title">{{title}}</div>
+        <div class="price-info">
+            <span class="our-price">Our Price ${{price}}</span>
+            <span class="retail"> Retail {{retail}}</span>
+        </div>
+        <div class="savings">
+            <span class="save">Save</span>
+            <span class="percent">{{savings}}</span>
+        </div>
+    </div>
+
+    <div id="gallery-container">
+        <div class="gallery-holder">
+            <div class="gallery">
+                <div class="holder">
+                    <div class="list">
+                        <div class="item"><figure><img class="gallery-image" src="{{image}}" alt="" /></figure></div>
+                        {% for i in 1..image_count %}
+                        <div class="item"><figure><img class="gallery-image" src="http://static3.nmr.allcdn.net/images/products/{{product_id}}-{{i}}-rg.jpg" alt="" /></figure></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <button class="prev ui-btn ui-icon-arrow-l ui-btn-icon-left ui-shadow ui-corner-all ui-mini"></button>
+                <button class="next ui-btn ui-icon-arrow-r ui-btn-icon-right ui-shadow ui-corner-all ui-mini"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-item-form-holder">
+
+        <div class="attr-holder" style="float:left;">
+
+            {% for attr, attribute in attributes %}
+
+            <select name="attribute" data-mini="true">
+                <option value="">Select a {{attr}}</option>
+                {% for option in attribute %}
+                <option value="{{option}}">{{attr}}: {{option}}</option>
+                {% endfor %}
+            </select>
+
+            {% endfor %}
+        </div>
+
+        <div class="add-item-btn-holder">
+            <select name="attribute" data-mini="true">
+                <option value="0">Choose a Quantity</option>
+                <option value="1" selected>Quantity: 1</option>
+                <option value="2">Quantity: 2</option>
+                <option value="3">Quantity: 3</option>
+                <option value="4">Quantity: 4</option>
+                <option value="5">Quantity: 5</option>
+            </select>
+            <button data-role="button" data-icon="plus" data-iconpos="right">Add to Cart</button>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block document_ready %}
+
+NMR.DealView.init();
+
+{% endblock %}

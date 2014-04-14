@@ -2,7 +2,7 @@
 
 namespace Nmr\Mobile\Controller;
 
-class AccountController extends \Nmr\BaseController {
+class AccountController extends \Nmr\Application\Controller {
 
 	public function index()
 	{

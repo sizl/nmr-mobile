@@ -1,0 +1,40 @@
+{% extends "layouts/default.html" %}
+
+{% block body %}
+
+<div id="content" class="ui-content grid">
+    {% for deal_id, deal in deals %}
+    <div class="grid-cell">
+        <a href="/deals/{{deal_id}}/{{deal.seo_friendly_title}}" data-ajax="false">
+            <div class="grid-image">
+                <div class="btm-grad"></div>
+                <div class="savings">
+                    <span class="save">Save</span>
+                    <span class="percent">{{deal.savings}}</span>
+                </div>
+                <img src="{{deal.image}}" alt="{{deal.title}}" />
+                <span class="category">{{deal.category}}</span>
+            </div>
+            <div class="grid-desc">
+                <div>
+                    <span class="price"> ${{deal.price}}</span>
+                    <span class="retail">${{deal.retail}}</span>
+                </div>
+                <div class="grid-title">
+                    {{deal.title}}
+                </div>
+                <div>
+                    <button data-role="button" data-mini="true" data-icon="search">View Deal</button>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block document_ready %}
+
+NMR.Deals.init();
+
+{% endblock %}

@@ -28,7 +28,10 @@ class Application {
 			$parts = explode('/', $_SERVER["REQUEST_URI"]);
 			$this->route = strtolower($parts[1]);
 			if(isset($parts[2]) && $parts[2] != '/') {
-				$this->action = strtolower($parts[2]);
+				//a url like: /deals/1242 will point to the index action in the deals controller
+				if(!is_numeric($parts[2])){
+					$this->action = strtolower($parts[2]);
+				}
 			}
 		}
 

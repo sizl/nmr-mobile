@@ -1,9 +1,7 @@
-(function(NMR) {
-  NMR.Deals = {
-
-        init: function(options) {
-
-            console.log('OMG DEALS!!');
+(function (NMR) {
+    NMR.Deals = {
+        init: function (options) {
+            console.log('NMR.Deals.init() called.');
         }
     }
 })(NMR);

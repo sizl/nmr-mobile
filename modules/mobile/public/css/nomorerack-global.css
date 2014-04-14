@@ -1,6 +1,10 @@
 /* Header Styles */
 /*************************************************************************/
 
+#daily-deals .ui-panel-wrapper {
+
+}
+
 #header {
     background-image: url("/images/header/logo.jpg");
     background-repeat: no-repeat;
@@ -14,7 +18,7 @@
     padding-top: 1px;
 }
 
-#nav-menu-btn, #nav-search-btn {
+#header .ui-btn {
     background: transparent;
     border-color: transparent;
 }
@@ -160,16 +164,289 @@
 
 .grid .grid-cell {
     background-color: white;
-    box-shadow: 1px 1px 1px rgba(0,0,0,.1);
+    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     display: inline-block;
+    vertical-align: top;
     width: 152px;
+    height: 272px;
+    font-size: 12px;
+    position: relative;
     margin-bottom: 6px;
-    height: 293px;
+}
+
+.grid .grid-cell > a {
+    text-decoration: none;
 }
 
 .grid .grid-image {
     display: block;
-    margin: 4px;
-    height: 148px;
+    height: 152px;
+    width: 152px;
     background: #F7F7F7;
+    position: relative;
+}
+
+.grid .grid-image img {
+    max-width: 152px;
+    max-height: 152px;
+    position: absolute;
+}
+
+.grid .grid-image .btm-grad {
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,0) 90%, rgba(255,255,255,1) 97%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(90%,rgba(255,255,255,0)), color-stop(97%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,1) 97%,rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,1) 97%,rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,1) 97%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,1) 97%,rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.grid .grid-image .category {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-shadow: none;
+    color: #333;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.grid .grid-cell .grid-desc {
+    padding: .2em .75em;
+    background-color: #f0ede4;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 114px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.grid .grid-cell .grid-desc > span {
+    font-weight: normal;
+    display: inline-block;
+    vertical-align: top;
+    background: #eee;
+}
+
+.grid .grid-cell .grid-desc .grid-title {
+    text-align: left;
+    font-weight: normal;
+    font-size: 12px;
+    color: #666;
+    height: 45px;
+    overflow: hidden;
+    padding-top: .3em;
+}
+
+.savings {
+    width: 30px;
+    background: #8dc63f;
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: -17px;
+    z-index: 1;
+    padding: .5em 0 .5em .6em;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    color: white;
+    text-shadow: none;
+}
+
+.savings .save {
+    display: block;
+    text-transform: uppercase;
+    font-size: .6em;
+}
+
+.savings .percent {
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+
+#content.detail-view-container {
+    background-color: #f0ede4;
+    padding: 0;
+}
+
+#content.detail-view-container .product-details {
+    position: relative;
+}
+
+#content.detail-view-container .title {
+    margin-right: 50px;
+    padding: 1em 0 .3em 1em;
+}
+#content.detail-view-container .savings {
+    top: 16px;
+    bottom: inherit;
+    width: 40px;
+}
+
+#content.detail-view-container .price-info {
+    padding: 0 1em;
+    margin-bottom: .5em;
+}
+
+#content.detail-view-container .price-info span {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#content.detail-view-container .price-info .our-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #8dc63f;
+    text-shadow: none;
+}
+
+#content.detail-view-container .price-info .retail {
+    text-decoration: line-through;
+    font-size: .8em;
+    text-shadow: none;
+    color: #999;
+    margin-left: .3em;
+    font-weight: normal;
+}
+
+.grid .grid-cell .price {
+    color: #8dc63f;
+    font-size: 14px;
+    font-weight: bold;
+}
+.grid .grid-cell .retail {
+    text-decoration: line-through;
+    font-size: 11px;
+    text-shadow: none;
+    color: #999;
+    margin-left: .3em;
+    font-weight: normal;
+}
+
+/* PDP Image Carousel */
+/********************************************/
+
+#gallery-container {
+    height: 270px;
+    background: white;
+    box-shadow: 0px 0px 2px rgba(0,0,0,.5);
+}
+
+#gallery-container div {
+    display: block;
+    height: 100%;
+}
+
+#gallery-container .gallery {
+    width: 100%;
+    overflow: hidden;
+    height: 90%;
+    position: relative;
+}
+
+#gallery-container .gallery div.holder {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+#gallery-container .gallery div.list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 99999px;
+    overflow: hidden;
+}
+
+#gallery-container .gallery div.item {
+    float: left;
+    min-width: 320px;
+    vertical-align: middle;
+}
+
+#gallery-container .gallery figure {
+    height: 100%;
+    display: block;
+    margin: 0;
+    padding: 0 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#gallery-container .gallery button {
+    position: absolute;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    overflow: hidden;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+#gallery-container .gallery button.prev {
+    left: 0;
+}
+
+#gallery-container .gallery button.next {
+    right: 0;
+}
+
+/* Add Item Label */
+/***********************************************/
+
+#add-item-form-holder .attr-holder {
+    float: left;
+    padding: .5em .8em;
+}
+
+#add-item-form-holder .attr-holder .ui-select > div > span {
+    text-align: left;
+}
+
+#add-item-form-holder .add-item-btn-holder {
+    float: left;
+    padding: .5em 0 .4em .5em;
+}
+
+#add-item-form-holder .add-item-btn-holder > button {
+    height: 4em;
+    box-shadow:inset 0px 1px 0px 0px #c1ed9c;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8dc63f), color-stop(1, #8cb82b) );
+    background:-moz-linear-gradient( center top, #8dc63f 5%, #8cb82b 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8dc63f', endColorstr='#8cb82b');
+    background-color: #8dc63f;
+    border-top-left-radius:6px;
+    border-top-right-radius:6px;
+    border-bottom-right-radius:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    border:1px solid #83c41a;
+    display:inline-block;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:15px;
+    font-weight:bold;
+    font-style:normal;
+    text-decoration:none;
+    text-align:center;
+    text-shadow:1px 1px 0px #689324;
+}
+
+#add-item-form-holder label {
+    line-height: 3em;
+    text-align: right;
+    padding-right: 1em;
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Nmr;
+namespace Nmr\Application;
 
 use Slim\Slim;
 
-class BaseController {
+class Controller {
 
 	/*
 	 * Slim Instance
@@ -57,6 +57,11 @@ class BaseController {
 	 */
 	public function render($template='', array $data = [])
 	{
+		if(is_array($template)) {
+			$this->data = array_merge($this->data, $template);
+			$template = $this->controller . '/' . $this->action . '.html';
+		}
+
 		if(empty($template)){
 			$template = $this->controller . '/' . $this->action . '.html';
 		}
