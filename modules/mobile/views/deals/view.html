@@ -4,13 +4,16 @@
 <script src="/js/pdp.js"></script>
 {% endblock %}
 
+{% block document_ready %}
+NMR.DealView.init();
+{% endblock %}
+
 {% block body %}
 
 {% include 'partials/headers/main-header.html' %}
 
 <div id="content" class="detail-view-container ui-content">
     <div class="product-details">
-        <div class="title">{{title}}</div>
         <div class="price-info">
             <span class="our-price">Our Price ${{price}}</span>
             <span class="retail"> Retail {{retail}}</span>
@@ -19,6 +22,7 @@
             <span class="save">Save</span>
             <span class="percent">{{savings}}</span>
         </div>
+        <div class="title">{{title}}</div>
     </div>
 
     <div id="gallery-container">
@@ -32,47 +36,47 @@
                         {% endfor %}
                     </div>
                 </div>
-                <button class="prev ui-btn ui-icon-arrow-l ui-btn-icon-left ui-shadow ui-corner-all ui-mini"></button>
-                <button class="next ui-btn ui-icon-arrow-r ui-btn-icon-right ui-shadow ui-corner-all ui-mini"></button>
+                <button class="prev ui-btn ui-icon-arrow-l ui-btn-icon-left ui-alt-icon ui-corner-all ui-mini"></button>
+                <button class="next ui-btn ui-icon-arrow-r ui-btn-icon-right ui-alt-icon ui-corner-all ui-mini"></button>
             </div>
         </div>
     </div>
 
     <div id="add-item-form-holder">
-
-        <div class="attr-holder" style="float:left;">
-
-            {% for attr, attribute in attributes %}
-
-            <select name="attribute" data-mini="true">
-                <option value="">Select a {{attr}}</option>
-                {% for option in attribute %}
-                <option value="{{option}}">{{attr}}: {{option}}</option>
+        <div id="form-message"></div>
+        <form id="add-item" method="post" action="/checkout">
+            <div class="attr-holder">
+                {% for attr, attribute in attributes %}
+                <select name="attribute[{{attr}}]" data-mini="true" data-icon="minus unselected">
+                    <option value="">{{attr}}</option>
+                    {% for option in attribute %}
+                    <option value="{{option}}">{{attr}}: {{option}}</option>
+                    {% endfor %}
+                </select>
                 {% endfor %}
-            </select>
-
-            {% endfor %}
-        </div>
-
-        <div class="add-item-btn-holder">
-            <select name="attribute" data-mini="true">
-                <option value="0">Choose a Quantity</option>
-                <option value="1" selected>Quantity: 1</option>
-                <option value="2">Quantity: 2</option>
-                <option value="3">Quantity: 3</option>
-                <option value="4">Quantity: 4</option>
-                <option value="5">Quantity: 5</option>
-            </select>
-            <button data-role="button" data-icon="plus" data-iconpos="right">Add to Cart</button>
-        </div>
-
+            </div>
+            <div class="add-item-btn-holder">
+                <select name="quantity" data-mini="true" data-icon="minus unselected">
+                    <option value="">Quantity</option>
+                    <option value="1">Quantity: 1</option>
+                    <option value="2">Quantity: 2</option>
+                    <option value="3">Quantity: 3</option>
+                    <option value="4">Quantity: 4</option>
+                    <option value="5">Quantity: 5</option>
+                </select>
+                <button data-role="button" data-icon="plus" data-iconpos="right" class="nmr-green">Add to Cart</button>
+            </div>
+        </form>
     </div>
 </div>
 
-{% endblock %}
-
-{% block document_ready %}
-
-NMR.DealView.init();
+<div id="alert" data-role="popup">
+    <div data-role="content">
+        <p id="alert-text"></p>
+        <div class="center-content">
+            <button data-role="button" data-mini="true" class="dismiss" data-rel="back">OK</button>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

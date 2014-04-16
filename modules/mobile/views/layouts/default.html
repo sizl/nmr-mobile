@@ -22,29 +22,18 @@
 
 </head>
 <body>
-
-<div data-role="page">
-
-    {% include 'partials/headers/main-header.html' %}
-
-    {% block body %}{% endblock %}
-
-    {% include 'partials/footer.html' %}
-
-    {% include 'partials/slide-nav.html' %}
-
-    {% block scripts %}{% endblock %}
-
-    <script type="text/javascript">
+    <div data-role="page">
+        {% include 'partials/headers/main-header.html' %}
+        {% block body %}{% endblock %}
+        {% include 'partials/footer.html' %}
+        {% include 'partials/slide-nav.html' %}
+        {% block scripts %}{% endblock %}
+        <script type="text/javascript">
         $(document).ready(function(){
-
             NMR.init();
-
             {% block document_ready %}{% endblock %}
         });
-    </script>
-
-</div>
-
+        </script>
+    </div>
 </body>
 </html>

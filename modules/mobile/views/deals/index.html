@@ -1,5 +1,13 @@
 {% extends "layouts/default.html" %}
 
+{% block scripts %}
+<script src="/js/deals.js"></script>
+{% endblock %}
+
+{% block document_ready %}
+NMR.Deals.init();
+{% endblock %}
+
 {% block body %}
 
 <div id="content" class="ui-content grid">
@@ -31,10 +39,4 @@
     </div>
     {% endfor %}
 </div>
-{% endblock %}
-
-{% block document_ready %}
-
-NMR.Deals.init();
-
 {% endblock %}

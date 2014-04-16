@@ -1,1 +1,167 @@
-<h2>Checkout</h2>
+{% extends "layouts/default.html" %}
+
+{% block scripts %}
+<script src="/js/checkout.js"></script>
+{% endblock %}
+{% block document_ready %}
+NMR.Checkout.init();
+{% endblock %}
+
+{% block body %}
+
+{% include 'partials/headers/main-header.html' %}
+
+<div id="content" class="checkout ui-content">
+
+    <div class="empty-cart">
+        <h3>Your cart is empty</h3>
+        <div class="empty-cart-cta">
+            <a href="/recent-items">Recently viewed items</a>
+            <a href="/" data-role="button" class="nmr-green" data-ajax="false">Continue Shopping</a>
+        </div>
+    </div>
+
+    <div class="cart-disclaimer">
+        Products are available on a <b><i>first come, first to check out basis</i></b>.
+        Items remain in your cart as you proceed to check-out, but don't take too long
+        as other customers might beat you to the punch!
+    </div>
+
+    {% for i in 1..3 %}
+    <div class="cart-item" id="item_{{i}}">
+        <div class="img-holder">
+            <img src="https://nmr.allcdn.net/images/products/159516-1-rg.jpg" />
+        </div>
+        <div class="item-summary">
+            <div class="item-title">
+                HP Pavilion Windows 8 Dual-Core 1.4GHz 500GB TouchSmart All-in-One 20" Desktop PC
+            </div>
+            <ul class="attrs">
+                <li><b>Style:</b> HP Pavilion Touchsmart</li>
+                <li><b>Price:</b> $469.00</li>
+                <li><b>Shipping:</b> $2.00</li>
+            </ul>
+            <div class="item-action">
+                <select name="quantity" data-mini="true" data-inline="true">
+                    <option value="1">Qty: 1</option>
+                    <option value="2">Qty: 2</option>
+                    <option value="3">Qty: 3</option>
+                    <option value="4">Qty: 4</option>
+                    <option value="5">Qty: 5</option>
+                    <option value="6">Qty: 6</option>
+                </select>
+                <a href="#confirm" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="minus" data-iconpos="right" data-item-id="item_{{i}}" class="remove-item">Remove</a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    {% endfor %}
+
+    <div class="checkout-secure">
+        <b>nomorerack</b> uses a secure connection to process transactions.
+        your data is encrypted and credit card numbers are never saved.
+    </div>
+
+    <div class="checkout-form-holder">
+        <div>
+            <input data-mini="true" data-inline="true" type="text" placeholder="Promo Code" />
+        </div>
+        <div>
+            <input data-mini="true" data-inline="true" type="submit" value="Redeem" />
+        </div>
+    </div>
+
+    <!-- check has credit -->
+    <div class="checkout-form-holder">
+        <div>
+            You have $0.00 credit
+        </div>
+        <div>
+            <input data-mini="true" data-inline="true" type="button" value="Apply" />
+        </div>
+    </div>
+    <!-- end credit -->
+
+    <div class="summary-holder">
+        <table id="cart-summary">
+            <tbody>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>$65.00</td>
+                </tr>
+                <tr>
+                    <td>Shipping</td>
+                    <td>$2.00</td>
+                </tr>
+                <tr>
+                    <td>Sales Tax</td>
+                    <td>$3.25</td>
+                </tr>
+                <tr>
+                    <td>
+                        Total
+                    </td>
+                    <td>
+                        $64.00
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="checkout-row">
+        <a href="/" data-ajax="false">Continue Shopping</a>
+        <button id="checkout-btn" data-mini="true" data-inline="true" class="nmr-green">Checkout</button>
+    </div>
+</div>
+
+<div id="address-form" data-role="page">
+    <div class="form-row">
+        <label>First Name</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>Last Name</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>Country</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>Address</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>Address 2</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>Zip/Postal Code</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>City</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>State</label>
+        <input type="text" name="first_name" />
+    </div>
+    <div class="form-row">
+        <label>Phone</label>
+        <input type="text" name="first_name" />
+    </div>
+</div>
+
+<div id="confirm" data-role="popup">
+    <div data-role="content">
+        <p>Are you sure you want to remove this item from your cart?</p>
+        <div class="center-content">
+            <button data-role="button" data-inline="true" data-mini="true" class="dismiss" data-rel="back">Cancel</button>
+            <button data-role="button" data-inline="true" data-mini="true" class="confirm">Yes</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
