@@ -9,8 +9,7 @@ NMR.Deals.init();
 {% endblock %}
 
 {% block body %}
-
-<div id="content" class="ui-content grid">
+<div id="content" class="grid ui-content">
     {% for deal_id, deal in deals %}
     <div class="grid-cell">
         <a href="/deals/{{deal_id}}/{{deal.seo_friendly_title}}" data-ajax="false">
@@ -32,7 +31,7 @@ NMR.Deals.init();
                     {{deal.title}}
                 </div>
                 <div>
-                    <button data-role="button" data-mini="true" data-icon="search">View Deal</button>
+                    <button data-role="button" data-mini="true" data-icon="search" class="nmr-green">View Deal</button>
                 </div>
             </div>
         </a>

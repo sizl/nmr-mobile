@@ -7,7 +7,7 @@ class IndexController extends \Nmr\Application\Controller {
 
 	public function index()
 	{
-		$this->route('get', function($referrer = '') {
+		$this->route('get', function() {
 
 			$Deals = new Deals();
 			$deals = $Deals->fetch();

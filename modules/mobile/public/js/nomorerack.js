@@ -9,8 +9,14 @@
                 e.preventDefault();
                 window.history.back();
             });
+        },
+
+        setOptions: function(obj, options) {
+            for(var o in options){
+                if(!obj.hasOwnProperty(o)){
+                    obj[o] = options[o];
+                }
+            }
         }
-
-
     }
 })();

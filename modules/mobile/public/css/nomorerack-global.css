@@ -176,6 +176,7 @@
 
 #content {
     padding: 0;
+    background-color: #f0ede4;
 }
 
 #content.grid {
@@ -197,6 +198,15 @@
     margin-bottom: 6px;
 }
 
+.grid.one-col .grid-cell {
+    width: 100%;
+}
+
+.grid.one-col .grid-image {
+    width: auto;
+    height: auto;
+}
+
 .grid .grid-cell > a {
     text-decoration: none;
 }
@@ -205,7 +215,7 @@
     display: block;
     height: 152px;
     width: 152px;
-    background: #F7F7F7;
+    background: #EEEEEE;
     position: relative;
 }
 
@@ -213,6 +223,11 @@
     max-width: 152px;
     max-height: 152px;
     position: absolute;
+}
+
+.grid.one-col .grid-image img {
+    max-width: none;
+    max-height: none;
 }
 
 .grid .grid-image .btm-grad {
@@ -243,7 +258,7 @@
 
 .grid .grid-cell .grid-desc {
     padding: .2em .75em;
-    background-color: #f0ede4;
+    background-color: #F7F7F7;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -269,6 +284,12 @@
     height: 45px;
     overflow: hidden;
     padding-top: .3em;
+}
+.grid .grid-cell .grid-desc button {
+    padding: 0;
+    padding: .4em;
+    text-shadow: none;
+    font-weight: normal;
 }
 
 .savings {
@@ -298,19 +319,19 @@
     font-weight: bold;
 }
 
-
-#content.detail-view-container {
-    background-color: #f0ede4;
-    padding: 0;
+#content.grid.one-col .savings {
+    top: 1em;
 }
 
 #content.detail-view-container .product-details {
     position: relative;
+    min-height: 78px;
 }
 
 #content.detail-view-container .title {
     margin-right: 50px;
-    padding: .5em;
+    padding: 0 .7em .7em .7em;
+    font-size: .9em;
 }
 #content.detail-view-container .savings {
     top: 1em;
@@ -473,10 +494,11 @@
     font-style:normal;
     text-decoration:none;
     text-align:center;
-    text-shadow:1px 1px 0px #689324;
+    text-shadow: none;
 }
 .ui-btn.nmr-green:hover {
     text-shadow: none;
+    box-shadow:inset 0px 1px 0px 0px #c1ed9c;
 }
 
 #add-item-form-holder .add-item-btn-holder > button {
@@ -682,7 +704,7 @@
     padding: .5em;
     clear: both;
     background: white;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #ccc;
 }
 
 #cart-summary {
@@ -736,3 +758,26 @@
     width: 9em;
     padding: .5em;
 }
+
+/* NMR Form */
+/***********************************************/
+#content.nmr-form {
+    background-color: white;
+}
+
+#content.nmr-form h3 {
+    padding: .3em 1em;
+    margin: 0;
+}
+
+#content.nmr-form h4 {
+    padding: .3em 1em;
+    margin: 0;
+    text-align: center;
+}
+
+#content.nmr-form .ui-field-contain {
+    border: none;
+    padding: .5em 1em;
+}
+

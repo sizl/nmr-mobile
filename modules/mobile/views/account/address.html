@@ -1,0 +1,33 @@
+{% extends "layouts/default.html" %}
+
+{% block scripts %}
+<script src="/js/address.js"></script>
+{% endblock %}
+{% block document_ready %}
+NMR.Address.init();
+{% endblock %}
+
+{% block body %}
+{% include 'partials/headers/main-header.html' %}
+
+<div id="content" class="nmr-form ui-content">
+    <h3>Add a {{type_titlelized}} Address</h3>
+    <form id="address-form" method="post" action="/account/address/{{type}}">
+        {% for field, label in fields %}
+        <div data-role="fieldcontain" class="ui-hide-label">
+            <label for="{{field}}">{{label}}</label>
+            <input type="text" id="{{field}}" name="{{field}}" placeholder="{{label}}" data-mini="true" />
+        </div>
+        {% endfor %}
+        {% if type == 'billing' %}
+        <div data-role="fieldcontain">
+            <input type="checkbox" id="clone" name="clone" checked value="1" data-mini="true" />
+            <label for="clone">Same as shipping</label>
+        </div>
+        {% endif %}
+        <div data-role="fieldcontain">
+            <button class="nmr-green" data-role="button" data-mini="true">Save {{type_titlelized}} Address</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

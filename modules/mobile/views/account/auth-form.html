@@ -1,0 +1,19 @@
+<form class="auth-form" method="post" action="{{action}}">
+    <h3>{{title}}</h3>
+    <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="email">Email Address</label>
+        <input type="text" id="email" name="email" placeholder="Email Address" data-mini="true" />
+    </div>
+    <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" data-mini="true" />
+    </div>
+    <div data-role="fieldcontain">
+        <label for="show-password">Show Password</label>
+        <input type="checkbox" id="show-password" name="show-password" value="1" data-mini="true" />
+    </div>
+    <div data-role="fieldcontain">
+        <input type="submit" data-role="button" data-mini="true" value="{{submit}}" />
+    </div>
+</form>
+

@@ -70,11 +70,7 @@ class Controller {
 			$this->data = array_merge($this->data, $data);
 		}
 
-		if($this->is_ajax()){
-			$this->render_json($this->data);
-		}else{
-			$this->app->render($template, $this->data);
-		}
+		$this->app->render($template, $this->data);
 	}
 
 	public function render_json($data)
@@ -84,8 +80,13 @@ class Controller {
 		exit(0);
 	}
 
-	public function is_ajax()
+	public function isAjax()
 	{
 		return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+	}
+
+	public function isPost()
+	{
+		return ($_SERVER['REQUEST_METHOD'] === 'POST');
 	}
 }

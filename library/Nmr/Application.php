@@ -21,11 +21,17 @@ class Application {
 
 	public function getController()
 	{
-		$this->route = 'index';
+		$this->route  = 'index';
 		$this->action = 'index';
 
-		if($_SERVER["REQUEST_URI"] != '/'){
-			$parts = explode('/', $_SERVER["REQUEST_URI"]);
+		$request_uri  = $_SERVER["REQUEST_URI"];
+
+		if(strpos($request_uri, '?')) {
+			$request_uri = strstr($request_uri, '?', true);
+		}
+
+		if($request_uri != '/'){
+			$parts = explode('/', $request_uri);
 			$this->route = strtolower($parts[1]);
 			if(isset($parts[2]) && $parts[2] != '/') {
 				//a url like: /deals/1242 will point to the index action in the deals controller
@@ -34,6 +40,10 @@ class Application {
 				}
 			}
 		}
+//		echo 'route: ' . $this->route;
+//		echo '<br />';
+//		echo 'action: ' . $this->action;
+//		die();
 
 		return $this;
 	}

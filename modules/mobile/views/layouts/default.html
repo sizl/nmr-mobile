@@ -31,9 +31,20 @@
         <script type="text/javascript">
         $(document).ready(function(){
             NMR.init();
+
             {% block document_ready %}{% endblock %}
+
         });
         </script>
+    </div>
+
+    <div id="alert" data-role="popup">
+        <div data-role="content">
+            <p id="alert-text"></p>
+            <div class="center-content">
+                <button data-role="button" data-mini="true" class="dismiss" data-rel="back">OK</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -4,16 +4,33 @@
 
     NMR.Checkout = {
 
-        init: function () {
+        init: function (options) {
+
+            //NMR.setOptions(this, options);
+
+            this.is_logged_out = true;
+            this.has_addresses = false;
+
             this.content = $("#content");
             this.checkout_btn = $("#checkout-btn");
+
             this.bindRemoveConfirm();
             this.bindCheckoutForm();
         },
 
         bindCheckoutForm: function() {
+            var self = this;
             this.checkout_btn.on('click', function() {
-                $.mobile.changePage('#address-form', { transition: "pop", role: "page", reverse: false } );
+
+                if(self.is_logged_out) {
+                    window.location.href = '/account/setup';
+                }else{
+                    if(self.has_addresses){
+                        window.location.href = '/checkout/options';
+                    }else{
+                        window.location.href = '/account/address/billing';
+                    }
+                }
             });
         },
 
@@ -43,4 +60,3 @@
         }
     }
 })(NMR);
-

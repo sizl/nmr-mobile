@@ -8,7 +8,11 @@ class CheckoutController extends \Nmr\Application\Controller {
 	{
 		$this->route('get', function() {
 
-			$this->render();
+			$this->render(['options' => [
+				'is_logged_out' => true,
+				'has_addresses' => false
+			]]);
+
 		});
 
 		$this->route('post', function() {

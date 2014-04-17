@@ -3,8 +3,11 @@
 {% block scripts %}
 <script src="/js/checkout.js"></script>
 {% endblock %}
+
 {% block document_ready %}
+
 NMR.Checkout.init();
+
 {% endblock %}
 
 {% block body %}
@@ -98,59 +101,15 @@ NMR.Checkout.init();
                     <td>$3.25</td>
                 </tr>
                 <tr>
-                    <td>
-                        Total
-                    </td>
-                    <td>
-                        $64.00
-                    </td>
+                    <td>Total</td>
+                    <td>$64.00</td>
                 </tr>
             </tbody>
         </table>
     </div>
-
     <div class="checkout-row">
         <a href="/" data-ajax="false">Continue Shopping</a>
         <button id="checkout-btn" data-mini="true" data-inline="true" class="nmr-green">Checkout</button>
-    </div>
-</div>
-
-<div id="address-form" data-role="page">
-    <div class="form-row">
-        <label>First Name</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>Last Name</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>Country</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>Address</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>Address 2</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>Zip/Postal Code</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>City</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>State</label>
-        <input type="text" name="first_name" />
-    </div>
-    <div class="form-row">
-        <label>Phone</label>
-        <input type="text" name="first_name" />
     </div>
 </div>
 
