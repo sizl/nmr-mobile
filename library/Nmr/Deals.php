@@ -14,13 +14,21 @@ class Deals {
 		];
 
 		foreach($deals as $id => $deal) {
+			$deals[$id]['deal_id'] = $id;
 			$deals[$id]['product_id'] = preg_replace("/[^0-9]/","", strrchr($deal['image'], '/'));
 			$deals[$id]['attributes'] = $fake_attributes;
 			$deals[$id]['seo_friendly_title'] = $this->sanitizeTitle($deal['title']);
+			$deals[$id]['image'] = 'http://static5.nmr.allcdn.net/images/products/'. $deals[$id]['product_id'] . '-dd.jpg';
 			$deals[$id]['image_count'] = 5;
 		}
 
 		return $deals;
+	}
+
+	public function find($deal_id)
+	{
+		$deals = $this->fetch();
+		return $deals[$deal_id];
 	}
 
 	function sanitizeTitle($string, $force_lowercase = true, $anal = false) {

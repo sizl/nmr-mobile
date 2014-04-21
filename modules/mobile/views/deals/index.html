@@ -2,40 +2,28 @@
 
 {% block scripts %}
 <script src="/js/deals.js"></script>
+<script src="/js/pdp.js"></script>
 {% endblock %}
 
 {% block document_ready %}
-NMR.Deals.init();
+    NMR.Deals.init();
 {% endblock %}
 
 {% block body %}
-<div id="content" class="grid ui-content">
-    {% for deal_id, deal in deals %}
-    <div class="grid-cell">
-        <a href="/deals/{{deal_id}}/{{deal.seo_friendly_title}}" data-ajax="false">
-            <div class="grid-image">
-                <div class="btm-grad"></div>
-                <div class="savings">
-                    <span class="save">Save</span>
-                    <span class="percent">{{deal.savings}}</span>
-                </div>
-                <img src="{{deal.image}}" alt="{{deal.title}}" />
-                <span class="category">{{deal.category}}</span>
-            </div>
-            <div class="grid-desc">
-                <div>
-                    <span class="price"> ${{deal.price}}</span>
-                    <span class="retail">${{deal.retail}}</span>
-                </div>
-                <div class="grid-title">
-                    {{deal.title}}
-                </div>
-                <div>
-                    <button data-role="button" data-mini="true" data-icon="search" class="nmr-green">View Deal</button>
-                </div>
-            </div>
-        </a>
-    </div>
-    {% endfor %}
+
+<div id="deals" data-role="page">
+    {% include 'partials/headers/main-header.html' %}
+    <div id="deals-content" data-role="content" class="grid"></div>
+    {% include 'partials/footer.html' %}
 </div>
+
+<div id="deal-view" data-role="page">
+    {% include 'partials/headers/back-btn-header.html' %}
+    <div id="deal-content" data-role="content"></div>
+    {% include 'partials/footer.html' %}
+</div>
+
+{% include 'partials/deals/deal-cell.html' %}
+{% include 'partials/deals/deal-view.html' %}
+
 {% endblock %}

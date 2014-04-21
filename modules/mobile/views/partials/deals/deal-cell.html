@@ -1,0 +1,30 @@
+{% verbatim %}
+<script id="product-cell-template" type="application/x-handlebars-template">
+{{#each deals}}
+<div class="grid-cell">
+    <a href="/deals/{{deal_id}}/{{seo_friendly_title}}" class="view-product"><div class="grid-image">
+            <div class="btm-grad"></div>
+            <div class="savings">
+                <span class="save">Save</span>
+                <span class="percent">{{savings}}</span>
+            </div>
+            <img src="{{image}}" alt="{{title}}" />
+            <span class="category">{{category}}</span>
+        </div>
+        <div class="grid-desc">
+            <div>
+                <span class="price"> ${{price}}</span>
+                <span class="retail">${{retail}}</span>
+            </div>
+            <div class="grid-title">
+                {{title}}
+            </div>
+            <div>
+                <!--<button data-role="button" data-mini="true" data-icon="search" class="nmr-green">View Deal</button>-->
+                <!--<button data-rel="#product-view" data-rel="page" data-role="button" data-inline="true" data-mini="true" data-icon="minus" data-iconpos="right" data-item-id="{{deal_id}}" class="remove-item">View Deal</button>-->
+            </div>
+        </div></a>
+</div>
+{{/each}}
+{% endverbatim %}
+</script>

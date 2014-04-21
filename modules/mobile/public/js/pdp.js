@@ -1,16 +1,18 @@
 (function (NMR) {
     NMR.DealView = {
 
+        initialized: false,
+
         init: function () {
 
-            this.content = $("#content");
-            this.alert = $("#alert");
             this.form = $("#add-item");
             this.form_holder = $("#add-item-form-holder");
             this.form_message = $("#form-message");
 
             this.initTouchSlideShow();
             this.bindAddItemForm();
+
+            this.initialized = true;
         },
 
         initTouchSlideShow: function() {

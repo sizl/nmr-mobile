@@ -10,41 +10,35 @@
     <link rel="stylesheet" href="/css/themes/nomorerack.min.css" />
     <link rel="stylesheet" href="/css/themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile.structure-1.4.2.min.css" />
-
     <link rel="stylesheet" href="/css/nomorerack-global.css" />
 
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+
     <script src="/js/lib/jquery.touch-slider.js"></script>
     <script src="/js/lib/handlebars-v1.3.0.js"></script>
 
+    <script src="/js/handlebar-helpers.js"></script>
     <script src="/js/nomorerack.js"></script>
 
 </head>
 <body>
-    <div data-role="page">
-        {% include 'partials/headers/main-header.html' %}
-        {% block body %}{% endblock %}
-        {% include 'partials/footer.html' %}
-        {% include 'partials/slide-nav.html' %}
-        {% block scripts %}{% endblock %}
-        <script type="text/javascript">
-        $(document).ready(function(){
-            NMR.init();
+
+    {% include 'partials/facebook.html' %}
+
+    {% block body %}{% endblock %}
+
+    {% block scripts %}{% endblock %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            NMR.init({{user|json_encode()|raw}});
 
             {% block document_ready %}{% endblock %}
 
         });
-        </script>
-    </div>
-
-    <div id="alert" data-role="popup">
-        <div data-role="content">
-            <p id="alert-text"></p>
-            <div class="center-content">
-                <button data-role="button" data-mini="true" class="dismiss" data-rel="back">OK</button>
-            </div>
-        </div>
-    </div>
+    </script>
 </body>
 </html>

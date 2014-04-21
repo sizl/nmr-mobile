@@ -6,11 +6,6 @@
     clear:both;
 }
 
-
-#daily-deals .ui-panel-wrapper {
-
-}
-
 #header {
     background-image: url("/images/header/logo.jpg");
     background-repeat: no-repeat;
@@ -159,27 +154,17 @@
     border-left-width: 0;
 }
 
-/* Content Styles */
-/*************************************************************************/
-.banner {
-    height: 2em;
-    line-height: 2em;
-    background-color: #8dc63f;
-    color: white;
-    font-weight: bold;
-    text-shadow: none;
-    padding: 0 1em;
-}
 
 /* Content Styles */
 /*************************************************************************/
 
-#content {
+.ui-content {
     padding: 0;
     background-color: #f0ede4;
+    min-height: inherit;
 }
 
-#content.grid {
+#deals-content.ui-content{
     padding: .2em;
 }
 
@@ -319,43 +304,48 @@
     font-weight: bold;
 }
 
-#content.grid.one-col .savings {
+.ui.content.grid.one-col .savings {
     top: 1em;
 }
 
-#content.detail-view-container .product-details {
+#deal-content.ui-content {
+    padding: 0;
+    margin: 0;
+}
+
+#deal-content .product-details {
     position: relative;
     min-height: 78px;
 }
 
-#content.detail-view-container .title {
+#deal-content .title {
     margin-right: 50px;
     padding: 0 .7em .7em .7em;
     font-size: .9em;
 }
-#content.detail-view-container .savings {
+#deal-content .savings {
     top: 1em;
     bottom: inherit;
     width: 40px;
 }
 
-#content.detail-view-container .price-info {
+#deal-content .price-info {
     padding: .4em 0 0 .5em;
 }
 
-#content.detail-view-container .price-info span {
+#deal-content .price-info span {
     display: inline-block;
     vertical-align: top;
 }
 
-#content.detail-view-container .price-info .our-price {
+#deal-content .price-info .our-price {
     font-size: 1.2em;
     font-weight: bold;
     color: #8dc63f;
     text-shadow: none;
 }
 
-#content.detail-view-container .price-info .retail {
+#deal-content .price-info .retail {
     text-decoration: line-through;
     font-size: .8em;
     text-shadow: none;
@@ -480,10 +470,7 @@
     background:-moz-linear-gradient( center top, #8dc63f 5%, #8cb82b 100% );
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8dc63f', endColorstr='#8cb82b');
     background-color: #8dc63f;
-    border-top-left-radius:6px;
-    border-top-right-radius:6px;
-    border-bottom-right-radius:6px;
-    border-bottom-left-radius:6px;
+    border-radius: 6px;
     text-indent:0;
     border:1px solid #83c41a;
     display:inline-block;
@@ -494,7 +481,9 @@
     font-style:normal;
     text-decoration:none;
     text-align:center;
-    text-shadow: none;
+    text-shadow: none !important;
+    padding: 0 1em;
+    line-height: 2.5em;
 }
 .ui-btn.nmr-green:hover {
     text-shadow: none;
@@ -753,31 +742,132 @@
     line-height: 4em;
 }
 
-.checkout-row > button {
+.checkout-row .checkout-btn {
     float: right;
-    width: 9em;
-    padding: .5em;
 }
 
 /* NMR Form */
 /***********************************************/
-#content.nmr-form {
+.nmr-form {
     background-color: white;
 }
 
-#content.nmr-form h3 {
-    padding: .3em 1em;
+.nmr-form h3 {
+    font-size: 1em;
+    padding: .3em .5em;
     margin: 0;
 }
 
-#content.nmr-form h4 {
+.nmr-form h4 {
     padding: .3em 1em;
     margin: 0;
     text-align: center;
 }
 
-#content.nmr-form .ui-field-contain {
+.nmr-form .ui-field-contain {
     border: none;
-    padding: .5em 1em;
+    padding: .25em .5em;
+}
+
+/*.ui-popup-container.ui-popup-active {*/
+    /*top: 3em;*/
+    /*left: 1em;*/
+    /*right: 1em;*/
+    /*bottom: 3em;*/
+    /*height: 100%;*/
+    /*overflow: scroll;*/
+    /*position: fixed;*/
+    /*width: 100%;*/
+/*}*/
+
+/* Login Popup */
+#login-popup {
+    width: 100%;
+    background-color: transparent;
+}
+
+#login-popup header {
+    color: white;
+    text-shadow: none;
+    background-image: url(/images/header/90percent-off.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100px;
+}
+
+#login-popup .or-divider {
+    padding: .5em;
+    text-align: center;
+    color: white;
+    text-shadow: none;
+    font-size: .8em;
+    position: relative;
+}
+
+#login-popup .or-divider:after {
+    content: '';
+    border: 1px solid #fff;
+    position: absolute;
+    width: 42%;
+    right: 0;
+    top: 1em;
+}
+#login-popup .or-divider:before {
+    content: '';
+    border: 1px solid white;
+    position: absolute;
+    width: 42%;
+    left: 0;
+    top: 1em;
+}
+
+#login-popup h3 {
+    color: white;
+    text-shadow: none;
+    font-size: .8em;
+    text-transform: uppercase;
+    margin:0;
+    padding: .5em;
+}
+
+#login-popup .ui-popup {
+    padding: .25em;
+    background-color: rgba(0,0,0, .82);
+    border: none;
+}
+
+#login-popup .ui-field-contain {
+    padding: .25em .5em;
+}
+
+#login-popup .show-password-container {
+    padding: 0 .5em;
+}
+
+#login-popup .show-password-container .ui-checkbox {
+    margin: 0;
+}
+#login-popup .show-password-container .ui-checkbox label {
+    background-color: transparent;
+    border: none;
+    color: white;
+    text-shadow: none;
+}
+
+#login-popup .show-password-container .ui-checkbox label.ui-checkbox-off:after {
+    background-color: #fff;
+}
+
+#login-popup a {
+    color: white;
+    text-shadow: none;
+    font-size: .8em;
+}
+
+#login .form-error {
+    color: rgb(245, 60, 60);
+    font-size: .9em;
+    padding: 0 .5em;
+    text-shadow: none;
 }
 
