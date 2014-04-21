@@ -1,14 +1,5 @@
 <?php
 
-define('APP', 'Website');
+define('MODULE', 'website');
 
-//IMPORTANT!!! config should not be committed!
-require '../../../config/config.php';
-
-require APP_ROOT . '/vendor/autoload.php';
-
-//Environment Specific Config
-require APP_ROOT . '/config/' . ENVIRONMENT . '.php';
-
-$app = new \Nmr\Application();
-$app->getController()->run();
+require dirname(__FILE__) . '/../../../initialize.php';
