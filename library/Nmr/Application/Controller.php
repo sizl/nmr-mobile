@@ -38,6 +38,17 @@ class Controller {
 		$this->action = $action;
 
 		$this->route = \Nmr\Application::build_route($controller, $action);
+
+		$this->data['app_id'] = \Nmr\Facebook::APP_ID;
+
+		$facebook = \Nmr\Facebook::instance();
+		$uid = $facebook->getUser();
+
+		$this->data['user'] = [
+			'authenticated' => true,
+			'fbconnected' => !empty($uid),
+			'fb_uid' => $uid
+		];
 	}
 
 	public function route($method, $params = '', $callback = '')

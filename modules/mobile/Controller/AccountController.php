@@ -5,25 +5,26 @@ use Nmr;
 
 class AccountController extends \Nmr\Application\Controller {
 
-	public function setup()
+	public function create()
+	{
+		$this->route('post', function() {
+			//TODO: create new account
+			$this->render_json([
+				'status' => 0,
+			]);
+		});
+	}
+
+	public function login()
 	{
 		$this->route('get', function() {
+			$this->render();
+		});
 
-			$reg_form = [
-				'title' => 'Create a New Account',
-				'action' => '/account/create',
-				'submit' => 'Sign Up'
-			];
-
-			$login_form = [
-				'title' => 'Log in',
-				'action' => '/account/login',
-				'submit' => 'Log In'
-			];
-
-			$this->render([
-				'reg_form' => $reg_form,
-				'login_form' => $login_form
+		$this->route('post', function() {
+			//TODO: create user session
+			$this->render_json([
+				'status' => 0,
 			]);
 		});
 	}

@@ -5,13 +5,8 @@
     NMR.Checkout = {
 
         init: function (options) {
-
             //NMR.setOptions(this, options);
-
-            this.is_logged_out = true;
-            this.has_addresses = false;
-
-            this.content = $("#content");
+            this.content = $("#checkout-container");
             this.checkout_btn = $("#checkout-btn");
 
             this.bindRemoveConfirm();
@@ -19,16 +14,25 @@
         },
 
         bindCheckoutForm: function() {
-            var self = this;
-            this.checkout_btn.on('click', function() {
 
-                if(self.is_logged_out) {
-                    window.location.href = '/account/setup';
+            this.bindOnBeforeChange();
+
+            this.checkout_btn.on('click', function(e) {
+                if(NMR.User.authenticated == false) {
+                    $("#login").popup('open');
+                    e.preventDefault();
                 }else{
-                    if(self.has_addresses){
-                        window.location.href = '/checkout/options';
-                    }else{
-                        window.location.href = '/account/address/billing';
+
+                }
+            });
+        },
+
+        bindOnBeforeChange: function() {
+
+            $(document).bind("pagechange", function(e, data) {
+                if (typeof data.toPage === "object") {
+                    if (data.toPage.data('url').search(/^\/checkout\/address/) !== -1) {
+                        NMR.Address.init();
                     }
                 }
             });
@@ -40,22 +44,29 @@
             this.remove_confirm = $("#confirm");
 
             this.content.find(".remove-item").on('click', function(e) {
+                //memoize the item id that is about to be removed
+                //then the confirm popup can have a handle on it
                 self.remove_id = $(this).data("item-id");
             });
 
-            this.remove_confirm.find("button.dismiss").on('click', function(){
-                $('[data-role=popup]').popup('close');
+            this.remove_confirm.find("button.dismiss").on('click', function() {
+                self.remove_confirm.popup('close');
             });
 
-            this.remove_confirm.find("button.confirm").on('click', function(){
-                self.content.find('#' + self.remove_id).fadeOut(500, function(){
+            this.remove_confirm.find("button.confirm").on('click', function() {
+
+                self.content.find('#' + self.remove_id).fadeOut(500, function() {
                     $(this).remove();
+                    self.remove_id = null;
+
+                    //if there are no more items in cart, show the empty view
                     if(self.content.find('.cart-item').length === 0){
                         self.content.find('.cart-disclaimer').hide();
                         self.content.find('.empty-cart').fadeIn();
                     }
                 });
-                $('[data-role=popup]').popup('close');
+
+                self.remove_confirm.popup('close');
             });
         }
     }
