@@ -9,4 +9,4 @@ require APP_ROOT . '/config/config.php';
 require APP_ROOT . '/config/' . ENVIRONMENT . '.php';
 
 $app = new \Nmr\Application();
-$app->getController()->run();
+$app->getController($_SERVER["REQUEST_URI"])->run();

@@ -19,23 +19,24 @@ class Application {
 		]);
 	}
 
-	public function getController()
+	public function getController($path)
 	{
 		$this->route  = 'index';
 		$this->action = 'index';
 
-		$request_uri  = $_SERVER["REQUEST_URI"];
-
-		if(strpos($request_uri, '?')) {
-			$request_uri = strstr($request_uri, '?', true);
+		if(strpos($path, '?')) {
+			$path = strstr($path, '?', true);
 		}
 
-		if($request_uri != '/'){
-			$parts = explode('/', $request_uri);
+		if($path != '/'){
+			$parts = explode('/', $path);
+
 			$this->route = strtolower($parts[1]);
-			if(isset($parts[2]) && $parts[2] != '/') {
-				//a url like: /deals/1242 will point to the index action in the deals controller
-				if(!is_numeric($parts[2])){
+
+			if(isset($parts[2])) {
+				if($parts[2] == '' || is_numeric($parts[2])){
+					$this->action = 'index';
+				}else{
 					$this->action = strtolower($parts[2]);
 				}
 			}
@@ -46,6 +47,16 @@ class Application {
 //		die();
 
 		return $this;
+	}
+
+	public function getRoute()
+	{
+		return $this->route;
+	}
+
+	public function getAction()
+	{
+		return $this->action;
 	}
 
 	public function run()
