@@ -12,11 +12,14 @@ class DealsController extends \Nmr\Application\Controller {
 			$Deals = new Deals();
 			$deals = $Deals->fetch();
 
-			if($this->isAjax()) {
-				$this->render('deals/view.html', ['deal' => $deals[$deal_id]]);
-			}
-		});
+			$data = [
+				'quantity' => 5,
+				'deal' => $deals[$deal_id]
+			];
 
+			$this->render('deals/view.html', $data);
+
+		});
 	}
 
 	public function fetch()
@@ -24,15 +27,16 @@ class DealsController extends \Nmr\Application\Controller {
 		$this->route('get', '/:limit/:offset', function($limit, $offset) {
 			$Deals = new Deals();
 			$deals = $Deals->fetch($limit, $offset);
-			$this->render_json(['status' => 0, 'deals' => $deals]);
+			$this->renderJson(['status' => 0, 'deals' => $deals]);
 		});
 	}
+
 	public function find()
 	{
 		$this->route('get', '/:deal_id', function($deal_id) {
 			$Deals = new Deals();
 			$deal = $Deals->find($deal_id);
-			$this->render_json(['status' => 0, 'deal' => $deal]);
+			$this->renderJson(['status' => 0, 'deal' => $deal]);
 		});
 	}
 }

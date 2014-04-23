@@ -2,6 +2,7 @@
 
 namespace Nmr\Application;
 
+use Nmr;
 use Slim\Slim;
 
 class Controller {
@@ -34,18 +35,30 @@ class Controller {
 	public function __construct(Slim $app, $controller, $action)
 	{
 		$this->app = $app;
-		$this->controller = $controller;
+
+		$this->api = new Nmr\ApiClient();
+
+		$this->setupRoute($controller, $action);
+		$this->setupViewData();
+	}
+
+	private function setupRoute($controller, $action)
+	{
 		$this->action = $action;
+		$this->controller = $controller;
 
 		$this->route = \Nmr\Application::build_route($controller, $action);
+	}
 
+	private function setupViewData()
+	{
 		$this->data['app_id'] = \Nmr\Facebook::APP_ID;
 
 		$facebook = \Nmr\Facebook::instance();
 		$uid = $facebook->getUser();
 
 		$this->data['user'] = [
-			'authenticated' => true,
+			'authenticated' => false,
 			'fbconnected' => !empty($uid),
 			'fb_uid' => $uid
 		];
@@ -84,7 +97,23 @@ class Controller {
 		$this->app->render($template, $this->data);
 	}
 
-	public function render_json($data)
+	public function requireSession($callback)
+	{
+		if(isset($_COOKIE['NMRSESSID'])){
+			call_user_func($callback, $_COOKIE['NMRSESSID']);
+		}else{
+			$result = $this->api->get('/customersession');
+			if($result['error'] == 0){
+				$session_id = $result['data']['session_id'];
+				setcookie("NMRSESSID", $session_id, time()+3600 ,'/');
+				call_user_func($callback, $session_id);
+			}else{
+				$this->renderJson(['status' => 1 , 'error' => 'Could not obtain session']);
+			}
+		}
+	}
+
+	public function renderJson($data)
 	{
 		header('Content-Type: application/json');
 		print json_encode($data);

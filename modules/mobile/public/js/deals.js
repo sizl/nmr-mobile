@@ -17,7 +17,7 @@
             $(document).bind("pagechange", function(e, data) {
                 if(typeof(data.toPage) == 'object'){
                     if (data.toPage.data('url').search(/^\/deals\//) !== -1) {
-                        NMR.DealView.init();
+                       NMR.DealView.init();
                     }
                 }
             });
@@ -27,19 +27,10 @@
             var self = this;
             this.showLoader('Loading deals...');
             this.fetchDeals().done(function(result){
-                var deals = self.prepareDeals(result.deals);
-                self.offset += NMR.countObj(deals);
-                self.deals.append(self.cell_template({deals: deals}));
+                self.offset += NMR.countObj(result.deals);
+                self.deals.append(self.cell_template({deals: result.deals}));
                 self.hideLoader();
             });
-        },
-
-        prepareDeals: function(deals) {
-            //re-save attributes as json string
-            for(var d in deals){
-                deals[d].attributes = JSON.stringify(deals[d].attributes);
-            }
-            return deals;
         },
 
         showLoader: function(msg) {

@@ -37,14 +37,10 @@ class Application {
 				if($parts[2] == '' || is_numeric($parts[2])){
 					$this->action = 'index';
 				}else{
-					$this->action = strtolower($parts[2]);
+					$this->action = strtolower(str_replace('-','_',$parts[2]));
 				}
 			}
 		}
-//		echo 'route: ' . $this->route;
-//		echo '<br />';
-//		echo 'action: ' . $this->action;
-//		die();
 
 		return $this;
 	}
@@ -71,6 +67,7 @@ class Application {
 			if(!method_exists($controller, $this->action)){
 				$this->error("$class::" . $this->action . "(). Method Not Found.", 404);
 			}else{
+
 				$controller->{$this->action}();
 				$this->slim->run();
 			}

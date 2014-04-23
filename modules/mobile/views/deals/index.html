@@ -1,12 +1,15 @@
 {% extends "layouts/default.html" %}
 
 {% block scripts %}
+
 <script src="/js/deals.js"></script>
 <script src="/js/pdp.js"></script>
+
 {% endblock %}
 
 {% block document_ready %}
-    NMR.Deals.init();
+
+NMR.Deals.init();
 {% endblock %}
 
 {% block body %}
@@ -17,13 +20,6 @@
     {% include 'partials/footer.html' %}
 </div>
 
-<div id="deal-view" data-role="page">
-    {% include 'partials/headers/back-btn-header.html' %}
-    <div id="deal-content" data-role="content"></div>
-    {% include 'partials/footer.html' %}
-</div>
-
-{% include 'partials/deals/deal-cell.html' %}
-{% include 'partials/deals/deal-view.html' %}
+{% include 'deals/deal-cell.html' %}
 
 {% endblock %}

@@ -10,6 +10,7 @@
             this.form_message = $("#form-message");
 
             this.initTouchSlideShow();
+            this.bindSelectors();
             this.bindAddItemForm();
 
             this.initialized = true;
@@ -43,28 +44,39 @@
         bindAddItemForm:function() {
             var self = this;
 
-            this.form.on('submit', function(e) {
+            this.form.bind('submit', function(e) {
+                //has unselected attributes?
                 e.preventDefault();
+
                 if(self.form_holder.find('.unselected').length) {
                     self.form_message.text('* Please select options for this item').addClass('error');
                     return false;
                 }
 
-                $.ajax({
-                    url: e.target.action,
-                    type: 'post',
-                    dataType: 'json',
-                    data: $(e.target).serializeArray(),
-                    success: function(result) {
-                        if(result.status == 1) {
-                            self.form_message.text(result.error).addClass('error');
-                        }else{
-                            window.location.href = '/checkout';
-                        }
+                self.validateSelection($(this).serializeArray()).done(function(result) {
+                    if(result.status == 1) {
+                        self.form_message.text('* ' + result.error).addClass('error');
+                    }else{
+
+                        console.log(result.payload);
+
+                        //window.location.href = '/checkout';
                     }
                 });
             });
+        },
 
+        validateSelection: function(post) {
+            return $.ajax({
+                url: '/checkout/add_item',
+                type: 'post',
+                dataType: 'json',
+                data: post
+            });
+        },
+
+        bindSelectors: function() {
+            var self = this;
             //Bind Select Dropdowns
             this.form_holder.find("select").on('change', function() {
                 if($(this).val() == ""){

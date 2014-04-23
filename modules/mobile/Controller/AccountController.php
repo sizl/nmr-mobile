@@ -9,7 +9,7 @@ class AccountController extends \Nmr\Application\Controller {
 	{
 		$this->route('post', function() {
 			//TODO: create new account
-			$this->render_json([
+			$this->renderJson([
 				'status' => 0,
 			]);
 		});
@@ -23,7 +23,7 @@ class AccountController extends \Nmr\Application\Controller {
 
 		$this->route('post', function() {
 			//TODO: create user session
-			$this->render_json([
+			$this->renderJson([
 				'status' => 0,
 			]);
 		});
@@ -35,7 +35,7 @@ class AccountController extends \Nmr\Application\Controller {
 
 			$this->route('post', '/:type', function($type) {
 				//TODO: insert address by type
-				$this->render_json($_POST);
+				$this->renderJson($_POST);
 			});
 
 		}else{

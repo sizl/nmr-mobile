@@ -2,6 +2,7 @@
 
 namespace Nmr\Mobile\Controller;
 use Nmr;
+use Nmr\Deals;
 
 class CheckoutController extends \Nmr\Application\Controller {
 
@@ -14,7 +15,7 @@ class CheckoutController extends \Nmr\Application\Controller {
 		});
 
 		$this->route('post', function() {
-			$this->render_json(['status' => 0]);
+			$this->renderJson($_POST);
 		});
 	}
 
@@ -24,7 +25,7 @@ class CheckoutController extends \Nmr\Application\Controller {
 
 			$this->route('post', '/:type', function($type) {
 				//TODO: insert address by type
-				$this->render_json($_POST);
+				$this->renderJson($_POST);
 			});
 
 		}else{
@@ -45,5 +46,25 @@ class CheckoutController extends \Nmr\Application\Controller {
 				}
 			});
 		}
+	}
+
+	public function add_item()
+	{
+		$this->route('post', function(){
+
+			$this->requireSession(function($session_id){
+
+				$result = $this->api->post('/cart/add/' . $_POST['deal_id'], $_POST);
+
+				if($result) {
+					$this->renderJson(['status' => 0 , 'session_id' => $session_id, 'result' => $result]);
+				}else{
+					$this->renderJson([
+						'status' => 1,
+						//'error' => $error
+					]);
+				}
+			});
+		});
 	}
 }

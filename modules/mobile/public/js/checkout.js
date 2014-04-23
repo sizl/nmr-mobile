@@ -9,17 +9,20 @@
             this.content = $("#checkout-container");
             this.checkout_btn = $("#checkout-btn");
 
+            //this.auth_modal = $("#login").popup();
+
             this.bindRemoveConfirm();
-            this.bindCheckoutForm();
+            //this.bindCheckoutForm();
         },
 
         bindCheckoutForm: function() {
 
+            var self = this;
             this.bindOnBeforeChange();
 
             this.checkout_btn.on('click', function(e) {
                 if(NMR.User.authenticated == false) {
-                    $("#login").popup('open');
+                    self.auth_modal.popup('open');
                     e.preventDefault();
                 }else{
 
