@@ -32,26 +32,25 @@
         },
 
         fbConnect: function(callback) {
-            FB.api('/me', function(user) {
-                console.log(user);
-                /*
-                 email: "sandra_akqcwxk_moiduwitz@tfbnw.net"
-                 first_name: "Sandra"
-                 gender: "female"
-                 id: "100008158214106"
-                 last_name: "Moiduwitz"
-                 link: "https://www.facebook.com/profile.php?id=100008158214106"
-                 locale: "en_US"
-                 name: "Sandra Moiduwitz"
-                 timezone: 0
-                 updated_time: "2014-04-18T19:07:47+0000"
-                 verified: false
-                 */
-                //TODO: connect on backend
 
-                result = true;
+            FB.api('/me', {fields: 'id, email, first_name, last_name, gender, timezone'}, function(user) {
+                var connect;
+                user.stategy = 'facebook';
+                user.access_token = FB.getAuthResponse()['accessToken'];
 
-                callback(result);
+                console.log('ACCESS TOKEN: ' + user.access_token);
+
+                connect = $.ajax({
+                    url: '/account/fbconnect',
+                    type: 'post',
+                    dataType: 'json',
+                    data: user
+                });
+
+                connect.done(function(result){
+                    var authenticated = (result.status == 0);
+                    callback(authenticated);
+                });
             });
         }
     }

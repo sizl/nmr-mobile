@@ -5,7 +5,7 @@
         init: function() {
 
             this.context = $("#login");
-            this.email = this.context.find("#email");
+            this.email = this.context.find("#email_address");
             this.password = this.context.find("#password");
             this.type = this.context.find("#form-type");
             this.error = this.context.find("#auth-form-error");
@@ -43,15 +43,16 @@
                 }
 
                 data = {
-                    email: $.trim(self.email.val()),
+                    email_address: $.trim(self.email.val()),
                     password: $.trim(self.password.val())
                 };
 
                 self.submitForm(path, data).done(function(result) {
                     if(result.status == 0){
                         self.authCompleted(true);
+                        self.error.text('').hide();
                     }else{
-                        self.error.text(result.error);
+                        self.error.text(result.error).show();
                     }
                 });
             });
@@ -96,7 +97,7 @@
                             if(response.authResponse){
                                 NMR.fbConnect(NMR.Login.authCompleted);
                             }
-                        }, {scope: 'email,publish_actions'});
+                        }, {scope: 'email, publish_actions'});
                     }
                 });
             });

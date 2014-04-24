@@ -5,14 +5,16 @@
     NMR.Checkout = {
 
         init: function (options) {
-            //NMR.setOptions(this, options);
+
+            NMR.setOptions(this, options);
+
             this.content = $("#checkout-container");
             this.checkout_btn = $("#checkout-btn");
 
-            //this.auth_modal = $("#login").popup();
+            this.auth_modal = $("#login");
 
             this.bindRemoveConfirm();
-            //this.bindCheckoutForm();
+            this.bindCheckoutForm();
         },
 
         bindCheckoutForm: function() {
@@ -22,10 +24,17 @@
 
             this.checkout_btn.on('click', function(e) {
                 if(NMR.User.authenticated == false) {
-                    self.auth_modal.popup('open');
                     e.preventDefault();
-                }else{
+                    self.auth_modal.popup('open');
 
+                    //override auto complete callback
+//                    NMR.Login.authCompleted = function(){
+//                        window.location.href = self.next_url;
+//                    };
+
+                }else{
+                    debugger;
+                    window.location.href = self.next_url;
                 }
             });
         },

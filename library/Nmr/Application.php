@@ -74,18 +74,6 @@ class Application {
 		}
 	}
 
-	static public function build_route($controller, $action)
-	{
-		$route = '/';
-		if($controller != 'index'){
-			$route .= $controller;
-		}
-		if($action != 'index'){
-			$route .= '/'. $action;
-		}
-		return $route;
-	}
-
 	private function error($message, $code)
 	{
 		if(ENVIRONMENT == 'development'){

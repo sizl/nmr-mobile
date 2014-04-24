@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block document_ready %}
-    NMR.Checkout.init();
+    NMR.Checkout.init({{options|json_encode|raw}});
 {% if user.authenticated == false %}
     NMR.Login.init();
 {% endif %}
@@ -82,7 +82,6 @@
             </div>
         </div>
         <!-- end credit -->
-
         <div class="checkout-form-holder">
             <div>
                 <input data-mini="true" data-inline="true" type="text" placeholder="Promo Code" />
@@ -116,7 +115,8 @@
         </div>
         <div class="checkout-row">
             <a href="/" data-ajax="false">Continue Shopping</a>
-            <a id="checkout-btn" href="#login" data-mini="true" data-rel="popup" data-inline="true" class="nmr-green checkout-btn" data-role="button">Checkout</a>
+            <!--<a id="checkout-btn" href="#login" data-mini="true" data-rel="popup" data-inline="true" class="nmr-green checkout-btn" data-role="button">Checkout</a>-->
+            <a id="checkout-btn" href="#" data-mini="true" data-inline="true" class="nmr-green checkout-btn" data-role="button">Checkout</a>
         </div>
     </div>
 
@@ -129,12 +129,7 @@
         You are now logged in. Please proceed to checkout.
     </div>
     {% endif %}
-
-
 </div>
-
-
-
 
 
 {% endblock %}

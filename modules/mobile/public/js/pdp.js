@@ -57,10 +57,7 @@
                     if(result.status == 1) {
                         self.form_message.text('* ' + result.error).addClass('error');
                     }else{
-
-                        console.log(result.payload);
-
-                        //window.location.href = '/checkout';
+                        window.location.href = '/checkout';
                     }
                 });
             });
