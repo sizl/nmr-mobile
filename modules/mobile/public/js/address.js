@@ -4,8 +4,6 @@
 
         init: function(options) {
 
-            debugger;
-
             this.bindSubmitForm();
 
 

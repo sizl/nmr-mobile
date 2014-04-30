@@ -89,21 +89,13 @@ class Controller {
 		return [];
 	}
 
-	private function getFacebookUid(){
-
-		//Check if site is FB Connected
-		if(isset($_COOKIE['fb_uid']) && isset($_COOKIE['fbsr_' . Nmr\Facebook::APP_ID])){
-			return $_COOKIE['fb_uid'];
+	private function getFacebookUid()
+	{
+		if(isset($_COOKIE['fbsr_' . Nmr\Facebook::APP_ID])){
+			$facebook = \Nmr\Facebook::instance();
+			return $facebook->getUser();
 		}
-
-		$facebook = \Nmr\Facebook::instance();
-		$fb_uid = $facebook->getUser();
-
-		if($fb_uid){
-			setcookie("fb_uid", $fb_uid, time()+3600 ,'/');
-		}
-
-		return $fb_uid;
+		return 0;
 	}
 
 	private function setupAuthentication()
@@ -123,8 +115,7 @@ class Controller {
 
 		$data = [
 			'authenticated' => $authenticated,
-			'fbconnected' => !empty($fb_uid),
-			'fb_uid' => $fb_uid
+			'fbconnected' => !empty($fb_uid)
 		];
 
 		if(!empty($customer)){

@@ -26,14 +26,11 @@
                 if(NMR.User.authenticated == false) {
                     e.preventDefault();
                     self.auth_modal.popup('open');
-
                     //override auto complete callback
-//                    NMR.Login.authCompleted = function(){
-//                        window.location.href = self.next_url;
-//                    };
-
+                    NMR.authCompleted = function(){
+                        window.location.href = self.next_url;
+                    };
                 }else{
-                    debugger;
                     window.location.href = self.next_url;
                 }
             });

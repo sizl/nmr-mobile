@@ -8,10 +8,16 @@ class AccountController extends \Nmr\Application\Controller {
 	public function create()
 	{
 		$this->route('post', function() {
-			//TODO: create new account
-			$this->renderJson([
-				'status' => 0,
-			]);
+
+			$post = $_POST;
+			$post['customer']['ip_address'] = $_SERVER['REMOTE_ADDR'];
+
+			if($this->session->hasNmrCookie()){
+				$post['session_id'] = $_COOKIE['NMRSESSID'];
+			}
+
+			$result = $this->api->post('/customers', $post);
+			$this->processAuthResponse($result);
 		});
 	}
 
@@ -29,61 +35,69 @@ class AccountController extends \Nmr\Application\Controller {
 				$this->renderJson(['status' => 1, 'error' => $error]);
 			}
 
-			$this->session->prepareLoginPost($post);
+			$this->session->prepareAuthPost($post);
 			$result = $this->api->post('/login', $post);
 
-			$this->processResult($result);
+			$this->processAuthResponse($result);
+		});
+	}
+
+	public function logout()
+	{
+		$this->route('get', function() {
+
+			$post = [];
+			if($this->session->hasNmrCookie()){
+				$post['session_id'] = $_COOKIE['NMRSESSID'];
+				$result = $this->api->post('/logout', $post);
+				if($result['error'] == 0){
+					$this->session->destroy();
+				}
+			}
+
+			$this->app->redirect('/');
 		});
 	}
 
 	public function fbconnect()
 	{
 		$this->route('post', function() {
+			$post = $_POST;
+			$this->session->prepareAuthPost($post);
+			$result = $this->api->post('/loginoauth', $post);
 
-//			$facebook = \Nmr\Facebook::instance();
-//			$facebook->api('/me/feed', 'POST', [
-//				'link' => 'www.nomorerack.com',
-//				'message' => 'just joined nomorerack'
-//			]);
+			if($result['error'] == 0 && isset($result['data']['session_id'])){
+				$this->session->setNmrCookie($result['data']['session_id']);
+			}
 
-//			$access_token = $facebook->getAccessToken();
-//			if($_POST['access_token'] != $access_token){
-//				$this->renderJson(['status' => 1, 'message' => 'Invalid Access Token', 'ac' => $access_token, 'dc' => $_POST['access_token']]);
-//			}
-
-/* Temporary placeholder for FB Connect */
-$post = [
-	'email_address' => 'kevin.liu@nomorerack.com',
-	'password' => 123456
-];
-
-$this->session->prepareLoginPost($post);
-$result = $this->api->post('/customerlogin', $post);
-$this->processResult($result);
-
+			$this->renderJson($result);
 		});
 	}
 
-	public function processResult($result)
+	private function processAuthResponse($result)
 	{
 		//Api call returned negative result
 		if($result['error'] == 1 && isset($result['message'])){
 			$this->renderJson(['status' => 1, 'error' => $result['message'], 'result' => $result]);
+			return;
 		}
 
 		//Login was successful
-		elseif(!empty($result['data']['session_id'])){
+		if(!empty($result['data']['session_id'])){
 			$this->session->setNmrCookie($result['data']['session_id']);
 			$this->renderJson([
 				'status' => 0,
 				'customer' => $result['data']['customer'],
 				'session_id' => $result['data']['session_id']
 			]);
+
+			return;
 		}
 
 		//Catch-all error
-		//$this->renderJson(['status' => 1, 'error' => 'An unknown error occurred.', 'result' => $result]);
+		$this->renderJson(['status' => 1, 'error' => 'An unknown error occurred.', 'result' => $result]);
 	}
+
 
 	public function address()
 	{

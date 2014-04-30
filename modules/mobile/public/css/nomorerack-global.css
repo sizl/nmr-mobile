@@ -25,6 +25,16 @@
     border-color: transparent;
 }
 
+#header .header-home {
+    background-color: transparent;
+    height: 37px;
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    padding: 0;
+    margin: 0;
+}
+
 /* Search Styles */
 /*************************************************************************/
 
@@ -82,11 +92,20 @@
 /* Basic settings */
 #nav-panel .ui-li-static.ui-collapsible {
     padding: 0;
+    background-color: #333333;
 }
 #nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview,
 #nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-heading {
     margin: 0;
 }
+
+#nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content .ui-listview li{
+    margin: 0;
+    padding: 0 1em;
+    border: none;
+    background-color: #333;
+}
+
 #nav-panel .ui-li-static.ui-collapsible > .ui-collapsible-content {
     padding-top: 0;
     padding-bottom: 0;
@@ -769,16 +788,6 @@
     padding: .25em .5em;
 }
 
-/*.ui-popup-container.ui-popup-active {*/
-    /*top: 3em;*/
-    /*left: 1em;*/
-    /*right: 1em;*/
-    /*bottom: 3em;*/
-    /*height: 100%;*/
-    /*overflow: scroll;*/
-    /*position: fixed;*/
-    /*width: 100%;*/
-/*}*/
 
 /* Login Popup */
 #login-popup {
@@ -862,6 +871,10 @@
     color: white;
     text-shadow: none;
     font-size: .8em;
+}
+
+#login-popup a.ui-btn {
+    color: #333;
 }
 
 #login .form-error {

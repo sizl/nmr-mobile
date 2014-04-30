@@ -11,7 +11,7 @@ NMR.DealView.init();
 
 {% block body %}
 
-<div data-role="page">
+<div id="pdp" data-role="page">
     {% include 'partials/headers/main-header.html' %}
 
     <div id="deal-content" data-role="content">
@@ -71,6 +71,7 @@ NMR.DealView.init();
         </div>
     </div>
     {% include 'partials/footer.html' %}
+    {% include 'partials/slide-nav.html' %}
 </div>
 
 {% endblock %}

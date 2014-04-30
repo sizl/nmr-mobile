@@ -1,42 +1,40 @@
+<header></header>
 
+<div data-role="fieldcontain" class="ui-hide-label">
+    <a href="/register" data-role="button" data-mini="true" data-ajax="false">Register</a>
+</div>
 
-    <header></header>
+<div class="or-divider">
+    <span>OR</span>
+</div>
 
-    <div data-role="fieldcontain" class="ui-hide-label">
-        <input id="register-btn" type="button" data-mini="true" data-role="button" class="nmr-green" value="Register" />
-    </div>
+<h3>Sign In</h3>
 
-    <div class="or-divider">
-        <span>OR</span>
-    </div>
+<div id="auth-form-error" class="form-error" style="display:none;"></div>
+<div data-role="fieldcontain" class="ui-hide-label">
+    <label for="email_address">Email Address</label>
+    <input type="text" id="email_address" name="email_address" placeholder="Email Address" data-mini="true" />
+</div>
+<div data-role="fieldcontain" class="ui-hide-label">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Password" data-mini="true" />
+</div>
+<div data-role="fieldcontain" class="show-password-container">
+    <label for="show-password">Show Password</label>
+    <input type="checkbox" id="show-password" name="show-password" value="1" data-mini="true" />
+</div>
+<div data-role="fieldcontain">
+    <input id="form-type" type="hidden" value="login" />
+    <input id="submit-btn" class="nmr-green" type="button" data-role="button" data-mini="true" value="Login" />
+</div>
 
-    <h3>Sign In</h3>
+<div data-role="fieldcontain">
+    <a href="#forgot-password">Forgot your password?</a>
+</div>
 
-    <div id="auth-form-error" class="form-error" style="display:none;"></div>
-    <div data-role="fieldcontain" class="ui-hide-label">
-        <label for="email_address">Email Address</label>
-        <input type="text" id="email_address" name="email_address" placeholder="Email Address" data-mini="true" />
-    </div>
-    <div data-role="fieldcontain" class="ui-hide-label">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Password" data-mini="true" />
-    </div>
-    <div data-role="fieldcontain" class="show-password-container">
-        <label for="show-password">Show Password</label>
-        <input type="checkbox" id="show-password" name="show-password" value="1" data-mini="true" />
-    </div>
-    <div data-role="fieldcontain">
-        <input id="form-type" type="hidden" value="login" />
-        <input id="submit-btn" class="nmr-green" type="button" data-role="button" data-mini="true" value="Login" />
-    </div>
-
-    <div data-role="fieldcontain">
-        <a href="#forgot-password">Forgot your password?</a>
-    </div>
-
-    <div data-role="fieldcontain">
-        <input id="fb-connect" type="button" data-role="button" data-mini="true" value="Facebook Connect" data-ajax="false" />
-    </div>
+<div data-role="fieldcontain">
+    <input id="fb-connect" type="button" data-role="button" data-mini="true" value="Facebook Connect" data-ajax="false" />
+</div>
 
 
 

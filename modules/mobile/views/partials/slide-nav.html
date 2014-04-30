@@ -1,15 +1,41 @@
 <div data-role="panel" data-position="left" data-display="push" id="nav-panel">
 
     <ul data-role="listview" class="ui-listview-outer">
+        {% if customer.authenticated == true %}
         <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
-            <h2>My Account</h2>
+            <h2>{{ customer.email_address }}</h2>
             <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
                 <li><a href="#">Account Info</a></li>
                 <li><a href="#">Order History</a></li>
                 <li><a href="#">View Credits</a></li>
                 <li><a href="#">Manage Addresses</a></li>
+                <li><a id="logout" href="/account/logout" data-ajax="false">Log Out</a></li>
             </ul>
         </li>
+        {% else %}
+        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+            <h2>Login</h2>
+            <form method="post" id="sb-login-form" data-ajax="false" action="/account/login">
+                <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+                    <li><input data-mini="true" type="text" name="email_address" value="" placeholder="Email" /></li>
+                    <li><input data-mini="true" type="password" name="password" value="" placeholder="Password" /></li>
+                    <li><input data-mini="true" type="submit" value="Login" /></li>
+                    <li><input data-mini="true" type="button" class="fb-btn" value="Login with Facebook" data-ajax="false" /></li>
+                </ul>
+            </form>
+        </li>
+        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+            <h2>Create Account</h2>
+            <form method="post" id="sb-reg-form" data-ajax="false" action="/account/create">
+                <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+                    <li><input data-mini="true" type="text" name="customer[email_address]" placeholder="Email" /></li>
+                    <li><input data-mini="true" type="password" name="customer[password]" value="" placeholder="Password" /></li>
+                    <li><input data-mini="true" type="submit" value="Create Account" /></li>
+                    <li><input data-mini="true" type="button" name="fbconnect" class="fb-btn" value="Login with Facebook" data-ajax="false" /></li>
+                </ul>
+            </form>
+        </li>
+        {% endif %}
         <li><a href="/account">Share &amp; Earn</a></li>
         <li><a href="/account">Customer Service</a></li>
         <li><a href="/account">Return Policy</a></li>

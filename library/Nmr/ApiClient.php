@@ -39,7 +39,7 @@ class ApiClient {
 		}
 
 		//catch-all debug response
-		return $this->debugResponse($uri, $options);
+		return $this->debugResponse($uri, $options, $output);
 	}
 
 	private function getOptions($options=null)
@@ -95,17 +95,17 @@ class ApiClient {
 		return (strpos($path, '?') === false) ? '?' : '&';
 	}
 
-	private function debugResponse($uri, $options)
+	private function debugResponse($uri, $options, $output)
 	{
 		$request = ['uri' => $uri];
 
-		if($options[CURLOPT_POST] === true){
+		if($options[CURLOPT_POST] == true){
 			$request['method'] = 'POST';
 			$request['params'] = $options[CURLOPT_POSTFIELDS];
 		}else{
 			$request['method'] = 'GET';
 		}
 
-		return ['error' => 1, 'message' => 'API request failed', 'request' => $request];
+		return ['error' => 1, 'message' => 'API request failed', 'request' => $request, 'output' => $output];
 	}
 }

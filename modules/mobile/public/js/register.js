@@ -1,10 +1,10 @@
 (function (NMR) {
 
-    NMR.Login = {
+    NMR.Register = {
 
         init: function() {
 
-            this.context = $("#login");
+            this.context = $("#register-container");
             this.email = this.context.find("#email_address");
             this.password = this.context.find("#password");
             this.error = this.context.find("#auth-form-error");
@@ -18,7 +18,7 @@
 
             var self = this;
 
-            $("#submit-btn").on('click', function() {
+            $("#submit-btn").on('click', function(e) {
 
                 var email = $.trim(self.email.val());
                 var password = self.password.val();
@@ -33,7 +33,7 @@
                     return false;
                 }
 
-                NMR.submitLogin(email, password).done(function(result) {
+                NMR.submitRegister(email, password).done(function(result) {
                     if(result.status == 0){
                         self.authCompleted(true);
                         self.error.text('').hide();
@@ -45,8 +45,10 @@
         },
 
         bindShowPassword: function() {
+
             var self = this;
             this.password = $("#password");
+
             $("#show-password").on('click', function(){
                 if(this.checked){
                     self.password.prop('type', 'text');
@@ -58,10 +60,12 @@
 
         bindFbConnect: function() {
             $("#fb-connect").on('click', function() {
-                NMR.authCompleted = function() {
+
+                NMR.authCompleted = function(result) {
                     window.location.href = '/checkout/address/billing';
                 };
-                NMR.fbLogin();
+
+                NMr.fbLogin();
             });
         }
     };

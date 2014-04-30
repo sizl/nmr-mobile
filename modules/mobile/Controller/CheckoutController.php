@@ -16,7 +16,7 @@ class CheckoutController extends \Nmr\Application\Controller {
 
 			$this->render([
 				'options' => [
-					'next_url' => '/checkout'
+					'next_url' => '/checkout/address/billing'
 				]
 			]);
 		});

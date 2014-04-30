@@ -18,26 +18,20 @@
     <script src="/js/lib/jquery.touch-slider.js"></script>
     <script src="/js/lib/handlebars-v1.3.0.js"></script>
 
-    <script src="/js/handlebar-helpers.js"></script>
+    <script src="/js/nmr-helpers.js"></script>
     <script src="/js/nomorerack.js"></script>
 
 </head>
 <body>
 
     {% include 'partials/facebook.html' %}
-
     {% block body %}{% endblock %}
-
     {% block scripts %}{% endblock %}
 
     <script type="text/javascript">
-
-        $(document).ready(function() {
-
+        $(document).on('pageinit', function() {
             NMR.init({{customer|json_encode()|raw}});
-
             {% block document_ready %}{% endblock %}
-
         });
     </script>
 </body>

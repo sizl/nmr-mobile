@@ -1,13 +1,27 @@
 <div id="fb-root"></div>
 <script>
+
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '{{app_id}}',
-            status     : false,
-            cookie     : true,
-            xfbml      : false
+            appId: '{{app_id}}',
+            status: false,
+            cookie: true,
+            xfbml: false
+        });
+
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                NMR.bindLogoutBtn();
+            }
+        });
+
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
+            if (response.status === 'connected') {
+                NMR.bindLogoutBtn();
+            }
         });
     };
+
 
     (function(d){
         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
