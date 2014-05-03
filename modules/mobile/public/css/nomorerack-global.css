@@ -183,14 +183,14 @@
     min-height: inherit;
 }
 
-#deals-content.ui-content{
+#deals-container.ui-content{
     padding: .2em;
 }
 
 /* Grid Styles */
 /*************************************************************************/
 
-.grid .grid-cell {
+#deals-container .grid-cell {
     background-color: white;
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     display: inline-block;
@@ -202,20 +202,20 @@
     margin-bottom: 6px;
 }
 
-.grid.one-col .grid-cell {
+#deals-container.one-col .grid-cell {
     width: 100%;
 }
 
-.grid.one-col .grid-image {
+#deals-container.one-col .grid-image {
     width: auto;
     height: auto;
 }
 
-.grid .grid-cell > a {
+#deals-container .grid-cell > a {
     text-decoration: none;
 }
 
-.grid .grid-image {
+#deals-container .grid-image {
     display: block;
     height: 152px;
     width: 152px;
@@ -223,18 +223,18 @@
     position: relative;
 }
 
-.grid .grid-image img {
+#deals-container .grid-image img {
     max-width: 152px;
     max-height: 152px;
     position: absolute;
 }
 
-.grid.one-col .grid-image img {
+#deals-container.one-col .grid-image img {
     max-width: none;
     max-height: none;
 }
 
-.grid .grid-image .btm-grad {
+#deals-container .grid-image .btm-grad {
     background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,0) 90%, rgba(255,255,255,1) 97%, rgba(255,255,255,1) 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(90%,rgba(255,255,255,0)), color-stop(97%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,1)));
     background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,1) 97%,rgba(255,255,255,1) 100%);
@@ -249,7 +249,7 @@
     right: 0;
 }
 
-.grid .grid-image .category {
+#deals-container .grid-image .category {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -260,7 +260,7 @@
     font-size: 10px;
 }
 
-.grid .grid-cell .grid-desc {
+#deals-container .grid-cell .grid-desc {
     padding: .2em .75em;
     background-color: #F7F7F7;
     position: absolute;
@@ -273,14 +273,14 @@
     text-align: left;
 }
 
-.grid .grid-cell .grid-desc > span {
+#deals-container .grid-cell .grid-desc > span {
     font-weight: normal;
     display: inline-block;
     vertical-align: top;
     background: #eee;
 }
 
-.grid .grid-cell .grid-desc .grid-title {
+#deals-container .grid-cell .grid-desc .grid-title {
     text-align: left;
     font-weight: normal;
     font-size: 12px;
@@ -289,7 +289,7 @@
     overflow: hidden;
     padding-top: .3em;
 }
-.grid .grid-cell .grid-desc button {
+#deals-container .grid-cell .grid-desc button {
     padding: 0;
     padding: .4em;
     text-shadow: none;
@@ -323,7 +323,7 @@
     font-weight: bold;
 }
 
-.ui.content.grid.one-col .savings {
+#deals-container.one-col .savings {
     top: 1em;
 }
 
@@ -373,12 +373,12 @@
     font-weight: normal;
 }
 
-.grid .grid-cell .price {
+#deals-container .grid-cell .price {
     color: #8dc63f;
     font-size: 14px;
     font-weight: bold;
 }
-.grid .grid-cell .retail {
+#deals-container .grid-cell .retail {
     text-decoration: line-through;
     font-size: 11px;
     text-shadow: none;
@@ -884,3 +884,61 @@
     text-shadow: none;
 }
 
+/** NMR Events *****************************************************/
+
+#events-page {
+    text-align: center;
+}
+
+#events-page .event-row {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-color: #ccc #999 #999 #ccc;
+    padding: 0;
+    margin: .3em;
+    text-align: left;
+}
+
+#events-page .event-row .event-title {
+    line-height: 2em;
+}
+
+#events-page .event-row .event-title a {
+    text-decoration: none;
+    color: #333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    padding-left: .4em;
+}
+
+#events-page .event-row .event-title a:after {
+    display: block;
+    float: right;
+    content: ">";
+    width: 2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: orange;
+    color: white;
+    text-align: center;
+}
+
+#events-page .event-row .event-image {
+
+}
+
+#events-page .event-row .event-image a {
+    display: block;
+    text-decoration: none;
+}
+
+#events-page .event-row .event-image img {
+    width: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+    border: 0;
+}

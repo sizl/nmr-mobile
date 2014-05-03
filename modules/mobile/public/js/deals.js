@@ -6,11 +6,25 @@
 
         init: function (options) {
 
-            this.deals = $("#deals-content");
-            this.cell_template = Handlebars.compile($("#product-cell-template").html());
+            this.limit = options.limit || 50;
+            this.offset = this.limit;
 
+            this.registerHandlers();
+            this.registerTemplates();
             this.bindOnBeforeChange();
+
             this.renderDeals();
+
+        },
+
+        registerHandlers: function()
+        {
+            this.deals = $("#deals-container");
+        },
+
+        registerTemplates: function()
+        {
+            this.cell_template = Handlebars.compile($("#product-cell-template").html());
         },
 
         bindOnBeforeChange: function() {
@@ -25,25 +39,10 @@
 
         renderDeals: function() {
             var self = this;
-            this.showLoader('Loading deals...');
             this.fetchDeals().done(function(result){
-                self.offset += NMR.countObj(result.deals);
+                self.offset += self.limit;
                 self.deals.append(self.cell_template({deals: result.deals}));
-                self.hideLoader();
             });
-        },
-
-        showLoader: function(msg) {
-            $.mobile.loading('show', {
-                text: msg,
-                textVisible: true,
-                theme: 'd',
-                html: ""
-            });
-        },
-
-        hideLoader: function() {
-            $.mobile.loading('hide');
         },
 
         fetchDeals: function() {

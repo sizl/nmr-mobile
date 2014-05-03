@@ -1,21 +1,24 @@
 (function() {
+
     window.NMR = {
 
         User: null,
 
-        FB_PERMS: {scope: 'email, publish_actions'},
+        init: function(customer) {
 
-        authCompleted: $.noop,
+            this.User = customer;
 
-        init: function(options) {
+            this.bindNavigation();
+            this.bindSidebarLoginForm();
+            this.bindSidebarRegistrationForm();
 
-            this.User = options;
+        },
+
+        /** Navigation *************************************/
+
+        bindNavigation: function() {
 
             $(document).delegate('#nav-panel', 'touchmove', false);
-
-            this.bindSidebarLogin();
-            this.bindSidebarRegister();
-            this.bindSidebarFbConnect();
 
             $('#nav-back-btn').on('click', function(e){
                 e.preventDefault();
@@ -23,83 +26,7 @@
             });
         },
 
-        setOptions: function(obj, options) {
-            for(var o in options){
-                if(!obj.hasOwnProperty(o)){
-                    obj[o] = options[o];
-                }
-            }
-        },
-
-        countObj: function(obj) {
-            var o, c = 0;
-            for(o in obj) {
-                c++;
-            }
-            return c;
-        },
-
-        bindSidebarFbConnect: function() {
-            if($(".fb-btn").length){
-                $(".fb-btn").on('click', function() {
-                    NMR.authCompleted = function(){
-                        location.reload();
-                    }
-                    NMR.fbLogin();
-                });
-            }
-        },
-
-        bindLogoutBtn: function() {
-            if($(".logout").length){
-                $(".logout").on('click', function() {
-                    FB.logout(function(response){
-                        window.location.href = '/account/logout';
-                    });
-                });
-            }
-        },
-
-        fbLogin: function() {
-            FB.getLoginStatus(function(response) {
-                if (response.status === 'connected') {
-                    NMR.fbConnect(NMR.authCompleted);
-                } else {
-                    FB.login(function(response) {
-                        if(response.authResponse){
-                            NMR.fbConnect(NMR.authCompleted);
-                        }
-                    }, NMR.FB_PERMS);
-                }
-            });
-        },
-
-        fbConnect: function(callback) {
-
-            FB.api('/me', {fields: 'id, email, first_name, last_name, gender, timezone'}, function(user) {
-                var connect;
-                user.strategy = 'facebook';
-                user.access_token = FB.getAuthResponse()['accessToken'];
-                user.email_address = user.email;
-
-                delete user['email'];
-                //console.log('ACCESS TOKEN: ' + user.access_token);
-
-                connect = $.ajax({
-                    url: '/account/fbconnect',
-                    type: 'post',
-                    dataType: 'json',
-                    data: user
-                });
-
-                connect.done(function(result){
-                    var authenticated = (result.status == 0);
-                    callback(authenticated);
-                });
-            });
-        },
-
-        bindSidebarLogin: function() {
+        bindSidebarLoginForm: function() {
             var self = this;
             var login_form = $("#sb-login-form");
 
@@ -130,7 +57,7 @@
             }
         },
 
-        bindSidebarRegister: function() {
+        bindSidebarRegistrationForm: function() {
             var self = this;
             var login_form = $("#sb-reg-form");
 
@@ -189,6 +116,44 @@
                     }
                 }
             });
+        },
+
+        /** View Helpers ****************************/
+
+        showLoader: function(msg) {
+            $.mobile.loading('show', {
+                text: msg,
+                textVisible: true,
+                theme: 'd',
+                html: ""
+            });
+        },
+
+        hideLoader: function() {
+            $.mobile.loading('hide');
+        },
+
+        authCompleted: function(){
+            location.reload();
+        },
+
+        /** Core **************************/
+
+        setProperties: function(obj, options) {
+           for(var o in options){
+                if(!obj.hasOwnProperty(o)){
+                    obj[o] = options[o];
+                }
+            }
+        },
+
+        countObj: function(obj) {
+            var o, c = 0;
+            for(o in obj) {
+                c++;
+            }
+            return c;
         }
+
     }
 })();

@@ -1,18 +1,17 @@
 {% extends "layouts/default.html" %}
 
 {% block scripts %}
-<script src="/js/deals.js"></script>
-<script src="/js/deal-details.js"></script>
+<script src="/js/events.js"></script>
 {% endblock %}
 
 {% block document_ready %}
-NMR.Deals.init({{js_options|json_encode()|raw}});
+NMR.Events.init({{js_options|json_encode()|raw}});
 {% endblock %}
 
 {% block body %}
-<div id="deals" data-role="page">
+<div id="events-page" data-role="page">
     {% include 'partials/headers/main-header.html' %}
-    {% include 'deals/deals-container.html' with {page_options: page_options} %}
+    {% include 'events/events-container.html' with {page_options: page_options} %}
     {% include 'partials/footer.html' %}
     {% include 'partials/slide-nav.html' %}
 </div>

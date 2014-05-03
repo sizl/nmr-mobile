@@ -9,6 +9,8 @@
             this.password = this.context.find("#password");
             this.error = this.context.find("#auth-form-error");
 
+            this.next_url = '/checkout/address/billing';
+
             this.bindShowPassword();
             this.bindAuthForm();
             this.bindFbConnect();
@@ -35,8 +37,7 @@
 
                 NMR.submitRegister(email, password).done(function(result) {
                     if(result.status == 0){
-                        self.authCompleted(true);
-                        self.error.text('').hide();
+                        window.location.href = self.next_url;
                     }else{
                         self.error.text(result.error).show();
                     }
@@ -59,13 +60,12 @@
         },
 
         bindFbConnect: function() {
-            $("#fb-connect").on('click', function() {
-
-                NMR.authCompleted = function(result) {
-                    window.location.href = '/checkout/address/billing';
-                };
-
-                NMr.fbLogin();
+            var self = this;
+            $("#fb-connect").on('click', function(e) {
+                e.preventDefault();
+                NMR.Facebook.connect(function(response) {
+                    window.location.href = self.next_url;
+                });
             });
         }
     };

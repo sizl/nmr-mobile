@@ -1,34 +1,24 @@
 <?php
+
 namespace Nmr;
 
-class Deals {
+class Events {
 
-	public function fetch($offset=0, $limit=2)
+	public function fetch($offset=0, $limit = 3)
 	{
-		$deals = $this->all();
-		return array_splice($deals, $offset, $limit);
+		$events = $this->all();
+		return array_splice($events, $offset, $limit);
 	}
 
 	public function all()
 	{
-		$deals = require 'data/deals.php';
+		$events = require 'data/events.php';
 
-		$fake_attributes = [
-			'Size' => ['Small','Medium','Large', 'X-Large'],
-			'Color' => ['Red','Green','Purple', 'Brown'],
-			'Pattern' => ['Striped','Solid', 'Checkered']
-		];
-
-		foreach($deals as $id => $deal) {
-			$deals[$id]['deal_id'] = $id;
-			$deals[$id]['product_id'] = preg_replace("/[^0-9]/","", strrchr($deal['image'], '/'));
-			$deals[$id]['attributes'] = $fake_attributes;
-			$deals[$id]['url'] = "/deals/" . $id . "/" . $this->sanitizeTitle($deal['title']);
-			$deals[$id]['image'] = 'http://static5.nmr.allcdn.net/images/products/'. $deals[$id]['product_id'] . '-dd.jpg';
-			$deals[$id]['image_count'] = 5;
+		foreach($events as $id => $event) {
+			$events[$id]['url'] = "/events/" . $id . "/" . $this->sanitizeTitle($event['title']);
 		}
 
-		return $deals;
+		return $events;
 	}
 
 	public function find($deal_id)
@@ -37,6 +27,7 @@ class Deals {
 		return $deals[$deal_id];
 	}
 
+	//TODO: Make this a helper
 	function sanitizeTitle($string, $force_lowercase = true, $anal = false) {
 		$strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
 			"}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",

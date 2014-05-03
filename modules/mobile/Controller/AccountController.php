@@ -42,23 +42,6 @@ class AccountController extends \Nmr\Application\Controller {
 		});
 	}
 
-	public function logout()
-	{
-		$this->route('get', function() {
-
-			$post = [];
-			if($this->session->hasNmrCookie()){
-				$post['session_id'] = $_COOKIE['NMRSESSID'];
-				$result = $this->api->post('/logout', $post);
-				if($result['error'] == 0){
-					$this->session->destroy();
-				}
-			}
-
-			$this->app->redirect('/');
-		});
-	}
-
 	public function fbconnect()
 	{
 		$this->route('post', function() {
@@ -68,9 +51,10 @@ class AccountController extends \Nmr\Application\Controller {
 
 			if($result['error'] == 0 && isset($result['data']['session_id'])){
 				$this->session->setNmrCookie($result['data']['session_id']);
+				$this->renderJson(['status' => 0, 'customer' => $result['data']['customer']]);
+			}else{
+				$this->renderJson(['status' => 1, 'error' => $result['message']]);
 			}
-
-			$this->renderJson($result);
 		});
 	}
 

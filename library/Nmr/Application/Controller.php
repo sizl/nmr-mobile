@@ -4,6 +4,7 @@ namespace Nmr\Application;
 
 use Nmr;
 use Slim\Slim;
+use Handlebars\Handlebars;
 
 class Controller {
 
@@ -44,6 +45,8 @@ class Controller {
 
 	protected $session;
 
+	protected $handlebars;
+
 	public function __construct(Slim $app, $controller, $action)
 	{
 		$this->app = $app;
@@ -52,19 +55,41 @@ class Controller {
 		$this->controller = $controller;
 
 		$this->api = new Nmr\ApiClient();
-		$this->session = new Nmr\Session();
+		$this->session = new Nmr\Session($this->api);
 
-		$this->setupRouteFromUri();
-		$this->setGlobalViewData();
-		$this->setupAuthentication();
+		$this->setupRoute();
+		$this->setCustomer();
+		$this->setJsOptions();
 	}
 
-	private function setGlobalViewData()
+	private function setCustomer()
 	{
-		$this->data['app_id'] = \Nmr\Facebook::APP_ID;
+		$fb_uid = $this->session->getFacebookUid();
+		$customer = $this->session->defaultCustomer();
+		$customer['fb_uid'] = $fb_uid;
+
+		if ($this->session->isAuthenticated()) {
+			$logged_in_user = $this->session->getCustomer();
+			if (!empty($logged_in_user)) {
+				$customer = $logged_in_user;
+				$customer['authenticated'] = true;
+				$customer['fb_uid'] = $fb_uid;
+			}
+		}
+
+		$this->data['customer'] = $customer;
 	}
 
-	private function setupRouteFromUri()
+	private function setJsOptions()
+	{
+		$this->data['facebook'] = [
+			'appId' => \Nmr\Facebook::APP_ID,
+			'permissions' => \Nmr\Facebook::$permissions,
+			'fields' => \Nmr\Facebook::$fields
+		];
+	}
+
+	private function setupRoute()
 	{
 		$route = '/';
 		if($this->controller != 'index'){
@@ -75,54 +100,6 @@ class Controller {
 		}
 
 		$this->route = $route;
-	}
-
-	private function getCustomer()
-	{
-		$session_id = $this->session->getSessionId();
-		$result = $this->api->get('/customersession', ['session_id' => $session_id]);
-
-		if(isset($result['data']['customer'])){
-			return $result['data']['customer'];
-		}
-
-		return [];
-	}
-
-	private function getFacebookUid()
-	{
-		if(isset($_COOKIE['fbsr_' . Nmr\Facebook::APP_ID])){
-			$facebook = \Nmr\Facebook::instance();
-			return $facebook->getUser();
-		}
-		return 0;
-	}
-
-	private function setupAuthentication()
-	{
-		$customer = [];
-		$authenticated = false;
-
-		if($this->session->hasNmrCookie()){
-			$customer = $this->getCustomer();
-		}
-
-		if(!empty($customer)){
-			$authenticated = true;
-		}
-
-		$fb_uid = $this->getFacebookUid();
-
-		$data = [
-			'authenticated' => $authenticated,
-			'fbconnected' => !empty($fb_uid)
-		];
-
-		if(!empty($customer)){
-			$this->data['customer'] = array_merge($data, $customer);
-		}else{
-			$this->data['customer'] = $data;
-		}
 	}
 
 	public function route($method, $params = '', $callback = '')
@@ -200,5 +177,19 @@ class Controller {
 	public function isPost()
 	{
 		return ($_SERVER['REQUEST_METHOD'] === 'POST');
+	}
+
+	protected function getHandlebarsTemplate($template_name)
+	{
+		return file_get_contents(MODULE_PATH .'/views/' . $template_name);
+	}
+
+	protected function renderHandlebars($template, $data = [])
+	{
+		if(!isset($this->handlebars)){
+			$this->handlebars = new Handlebars();
+		}
+
+		return $this->handlebars->render($template, $data);
 	}
 }

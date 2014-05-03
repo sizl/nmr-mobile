@@ -57,11 +57,11 @@
         },
 
         bindFbConnect: function() {
-            $("#fb-connect").on('click', function() {
-                NMR.authCompleted = function() {
+            $("#fb-connect").on('click', function(e) {
+                e.preventDefault();
+                NMR.Facebook.connect(function() {
                     window.location.href = '/checkout/address/billing';
-                };
-                NMR.fbLogin();
+                });
             });
         }
     };

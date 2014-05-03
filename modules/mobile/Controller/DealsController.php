@@ -10,11 +10,11 @@ class DealsController extends \Nmr\Application\Controller {
 		$this->route('get', '/:id/:seo_title', function($deal_id, $seo_title) {
 
 			$Deals = new Deals();
-			$deals = $Deals->fetch();
+			$deal = $Deals->find($deal_id);
 
 			$data = [
 				'quantity' => 5,
-				'deal' => $deals[$deal_id]
+				'deal' => $deal
 			];
 
 			$this->render('deals/view.html', $data);

@@ -1,7 +1,51 @@
 <?php
 namespace Nmr;
+use Nmr\Facebook;
+use Nmr\ApiClient;
 
 class Session {
+
+	private $api;
+
+	public function __construct(ApiClient $api)
+	{
+		$this->api = $api;
+	}
+
+	public function defaultCustomer()
+	{
+		return [
+			'authenticated' => false,
+			'fb_uid' => 0
+		];
+	}
+
+	public function getCustomer()
+	{
+		$session_id = $this->getSessionId();
+		$result = $this->api->get('/customersession', ['session_id' => $session_id]);
+
+		if(isset($result['data']['customer'])){
+			return $result['data']['customer'];
+		}
+
+		return false;
+	}
+
+	public function isAuthenticated()
+	{
+		return $this->hasNmrCookie();
+	}
+
+	public function getFacebookUid()
+	{
+		if(isset($_COOKIE['fbsr_' . Facebook::APP_ID])){
+			$facebook = \Nmr\Facebook::instance();
+			return $facebook->getUser();
+		}
+
+		return 0;
+	}
 
 	public function validateLogin($post, &$error)
 	{

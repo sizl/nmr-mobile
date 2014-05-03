@@ -6,7 +6,8 @@
 
         init: function (options) {
 
-            NMR.setOptions(this, options);
+
+            NMR.setProperties(this, options);
 
             this.content = $("#checkout-container");
             this.checkout_btn = $("#checkout-btn");
