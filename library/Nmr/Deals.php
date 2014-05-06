@@ -3,9 +3,20 @@ namespace Nmr;
 
 class Deals {
 
-	public function fetch($offset=0, $limit=2)
+	public function fetch($offset=0, $limit=4, $category=false)
 	{
 		$deals = $this->all();
+
+		if ($category) {
+			$items = [];
+			foreach($deals as $deal) {
+				if (strtolower($deal['category']) == strtolower($category)) {
+					$items[] = $deal;
+				}
+			}
+
+			$deals = $items;
+		}
 		return array_splice($deals, $offset, $limit);
 	}
 

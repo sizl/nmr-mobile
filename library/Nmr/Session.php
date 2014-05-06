@@ -34,7 +34,7 @@ class Session {
 
 	public function isAuthenticated()
 	{
-		return $this->hasNmrCookie();
+		return $this->hasCookie();
 	}
 
 	public function getFacebookUid()
@@ -68,12 +68,12 @@ class Session {
 		$post['ip_address'] = $_SERVER['REMOTE_ADDR'];
 
 		//set cookie if present
-		if($this->hasNmrCookie()){
+		if($this->hasCookie()){
 			$post['session_id'] = $_COOKIE['NMRSESSID'];
 		}
 	}
 
-	public function hasNmrCookie()
+	public function hasCookie()
 	{
 		return isset($_COOKIE['NMRSESSID']);
 	}
@@ -83,7 +83,7 @@ class Session {
 		return $_COOKIE['NMRSESSID'];
 	}
 
-	public function setNmrCookie($session_id)
+	public function setCookie($session_id)
 	{
 		setcookie("NMRSESSID", $session_id, time()+3600 ,'/');
 	}

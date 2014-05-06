@@ -3,6 +3,7 @@
 
 namespace Nmr\Mobile\Controller;
 use Nmr\Events;
+use Nmr\Deals;
 
 class EventsController extends \Nmr\Application\Controller {
 
@@ -23,6 +24,25 @@ class EventsController extends \Nmr\Application\Controller {
 				'page_options' => [
 					'cell_template' => $cell_template,
 					'events_html' => $events_html
+				]
+			]);
+		});
+
+		$this->route('get', '/:id/:seo_title', function($id, $seo_title) {
+
+			$limit = 4;
+
+			$Deals = new Deals();
+			$deals = $Deals->fetch(0, $limit);
+
+			$cell_template = $this->getHandlebarsTemplate('deals/deal-cell.hbs');
+			$deals_html = $this->renderHandlebars($cell_template, ['deals' => $deals]);
+
+			$this->render('deals/index.html', [
+				'js_options' => ['limit' => $limit, 'category' => 'all'],
+				'page_options' => [
+					'cell_template' => $cell_template,
+					'deals_html' => $deals_html
 				]
 			]);
 		});

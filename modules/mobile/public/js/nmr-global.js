@@ -4,6 +4,10 @@
 
         User: null,
 
+        Nav: {
+
+        },
+
         init: function(customer) {
 
             this.User = customer;
@@ -12,6 +16,17 @@
             this.bindSidebarLoginForm();
             this.bindSidebarRegistrationForm();
 
+            this.bindNavInits();
+
+        },
+
+        bindNavInits: function() {
+
+            $(document).bind("pagechange", function(e, data) {
+                if(typeof(data.toPage) == 'object'){
+                    NMR[data.toPage.data('init')].init();
+                }
+            });
         },
 
         /** Navigation *************************************/
@@ -94,7 +109,7 @@
 
         submitLogin: function(email, password) {
             return $.ajax({
-                url: '/account/login',
+                url: '/login',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -106,7 +121,7 @@
 
         submitRegister: function(email, password) {
             return $.ajax({
-                url: '/account/create',
+                url: '/register',
                 type: 'post',
                 dataType: 'json',
                 data: {

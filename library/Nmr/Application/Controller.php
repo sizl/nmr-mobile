@@ -148,13 +148,13 @@ class Controller {
 
 	public function requireSession($callback)
 	{
-		if($this->session->hasNmrCookie()){
+		if($this->session->hasCookie()){
 			call_user_func($callback, $_COOKIE['NMRSESSID']);
 		}else{
 			$result = $this->api->post('/customersession');
 
 			if($result['error'] == 0){
-				$this->session->setNmrCookie($result['data']['session_id']);
+				$this->session->setCookie($result['data']['session_id']);
 				call_user_func($callback, $result['data']['session_id']);
 			}else{
 				$this->renderJson(['status' => 1 , 'error' => 'Could not obtain session']);
@@ -192,4 +192,6 @@ class Controller {
 
 		return $this->handlebars->render($template, $data);
 	}
+
+
 }

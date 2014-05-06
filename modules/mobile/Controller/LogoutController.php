@@ -9,7 +9,7 @@ class LogoutController extends \Nmr\Application\Controller {
 	{
 		$this->route('get', function() {
 
-			if($this->session->hasNmrCookie()){
+			if($this->session->hasCookie()){
 				$result = $this->api->post('/logout', ['session_id' => $_COOKIE['NMRSESSID']]);
 				if($result['error'] == 0){
 					$this->session->destroy();

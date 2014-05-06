@@ -10,10 +10,8 @@ NMR.Address.init();
 
 {% block body %}
 
-
 <div data-role="page" class="nmr-form">
     {% include 'partials/headers/main-header.html' %}
-
     <div data-role="content">
         <h3>{{title}}</h3>
         <form id="address-form" method="post" action="/account/address/{{type}}">
@@ -34,9 +32,7 @@ NMR.Address.init();
             </div>
         </form>
     </div>
-    {% include 'partials/slide-nav.html' %}
     {% include 'partials/footer.html' %}
+    {% include 'partials/slide-nav.html' %}
 </div>
-
-
 {% endblock %}

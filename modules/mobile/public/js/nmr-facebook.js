@@ -102,7 +102,7 @@
                         alert(result.error.message);
                     } else {
                         $.ajax({
-                            url: '/account/fbconnect',
+                            url: '/login/fbconnect',
                             type: 'post',
                             dataType: 'json',
                             data: NMR.Facebook.prepareParams(result)

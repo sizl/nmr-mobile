@@ -26,7 +26,7 @@
         </li>
         <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
             <h2>Create Account</h2>
-            <form method="post" id="sb-reg-form" data-ajax="false" action="/account/create">
+            <form method="post" id="sb-reg-form" data-ajax="false" action="/register">
                 <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
                     <li><input data-mini="true" type="text" name="customer[email_address]" placeholder="Email" /></li>
                     <li><input data-mini="true" type="password" name="customer[password]" value="" placeholder="Password" /></li>
@@ -37,13 +37,13 @@
         </li>
         {% endif %}
         <li><a href="/events">Events</a></li>
-        <li><a href="/deals?category=women">Women</a></li>
-        <li><a href="/deals?category=men">Men</a></li>
-        <li><a href="/deals?category=electronics">Electronics</a></li>
-        <li><a href="/deals?category=home">Home</a></li>
-        <li><a href="/deals?category=lifestyle">Lifestyle</a></li>
-        <li><a href="/deals?category=jewerly">Jewerly</a></li>
-        <li><a href="/deals?category=kids">Kids</a></li>
+        <li><a href="/deals/category/women">Women</a></li>
+        <li><a href="/deals/category/men">Men</a></li>
+        <li><a href="/deals/category/electronics">Electronics</a></li>
+        <li><a href="/deals/category/home">Home</a></li>
+        <li><a href="/deals/category/lifestyle">Lifestyle</a></li>
+        <li><a href="/deals/category/jewelery">Jewelery</a></li>
+        <li><a href="/deals/category/kids">Kids</a></li>
         <li><a href="/customer_service">Customer Service</a></li>
     </ul>
 </div>

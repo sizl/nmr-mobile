@@ -1,8 +1,7 @@
 {% extends "layouts/default.html" %}
 
 {% block scripts %}
-
-<script src="/js/pdp.js"></script>
+<script src="/js/deal-details.js"></script>
 {% endblock %}
 
 {% block document_ready %}
@@ -11,7 +10,7 @@ NMR.DealView.init();
 
 {% block body %}
 
-<div id="pdp" data-role="page">
+<div id="deal-detail" data-role="page" data-init="DealsView">
     {% include 'partials/headers/main-header.html' %}
 
     <div id="deal-content" data-role="content">

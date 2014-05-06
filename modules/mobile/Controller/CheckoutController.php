@@ -46,11 +46,9 @@ class CheckoutController extends \Nmr\Application\Controller {
 					'type' => $type
 				];
 
-				if($this->isAjax()){
-					$this->render('account/address-form.html', $data);
-				}else{
-					$this->render('account/address.html', $data);
-				}
+
+				$this->render('account/address.html', $data);
+
 			});
 		}
 	}
