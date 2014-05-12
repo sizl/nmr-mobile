@@ -4,10 +4,6 @@
 
         User: null,
 
-        Nav: {
-
-        },
-
         init: function(customer) {
 
             this.User = customer;
@@ -15,18 +11,6 @@
             this.bindNavigation();
             this.bindSidebarLoginForm();
             this.bindSidebarRegistrationForm();
-
-            this.bindNavInits();
-
-        },
-
-        bindNavInits: function() {
-
-            $(document).bind("pagechange", function(e, data) {
-                if(typeof(data.toPage) == 'object'){
-                    NMR[data.toPage.data('init')].init();
-                }
-            });
         },
 
         /** Navigation *************************************/

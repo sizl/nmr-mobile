@@ -63,7 +63,9 @@
                     window.location.href = '/checkout/address/billing';
                 });
             });
-        }
+        },
+
+        authCompleted: $.noop
     };
 
 })(NMR);

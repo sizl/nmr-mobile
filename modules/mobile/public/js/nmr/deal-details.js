@@ -57,7 +57,8 @@
                     if(result.status == 1) {
                         self.form_message.text('* ' + result.error).addClass('error');
                     }else{
-                        window.location.href = '/checkout';
+
+                        //window.location.href = '/checkout';
                     }
                 });
             });
@@ -65,7 +66,7 @@
 
         validateSelection: function(post) {
             return $.ajax({
-                url: '/checkout/add_item',
+                url: '/cart/add',
                 type: 'post',
                 dataType: 'json',
                 data: post

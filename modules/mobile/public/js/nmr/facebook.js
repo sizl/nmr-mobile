@@ -16,7 +16,6 @@
 
             this.loadScript(function() {
                 FB.init(NMR.Facebook.options);
-
                 //Check if user is already connected
                 FB.getLoginStatus(function(response) {
                     NMR.Facebook.processResponse(response);
@@ -25,9 +24,9 @@
         },
 
         processResponse: function (response) {
-            NMR.Facebook.connected = (response.status === 'connected');
-            NMR.Facebook.bindLogoutHandlers();
-            NMR.Facebook.bindLoginHandlers();
+            this.connected = (response.status === 'connected');
+            this.bindLogoutHandlers();
+            this.bindLoginHandlers();
         },
 
         bindLogoutHandlers: function() {
@@ -90,8 +89,8 @@
 
             FB.login(function(response) {
 
+                //user either canceled
                 if (response.status != 'connected') {
-                    alert('Could not connect with Facebook. Please refresh and try again');
                     return false;
                 }
 

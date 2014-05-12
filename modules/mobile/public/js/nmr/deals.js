@@ -45,9 +45,10 @@
 
             $.getJSON(url).done(function(result){
                 self.deals_container.append(self.cell_template({deals: result.deals}));
-            }).error(function() {
+            }).error(function(xhr, status, msg) {
                 self.error = true;
-               alert('An error occurred when tyring to load more deals');
+                //alert('An error occurred when tyring to load more deals');
+                console.log(status, msg);
             }).always(function(){
                 self.loading = false;
             });

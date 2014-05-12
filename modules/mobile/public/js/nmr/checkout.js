@@ -28,7 +28,7 @@
                     e.preventDefault();
                     self.auth_modal.popup('open');
                     //override auto complete callback
-                    NMR.authCompleted = function(){
+                    NMR.Login.authCompleted = function(){
                         window.location.href = self.next_url;
                     };
                 }else{
