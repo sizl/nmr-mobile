@@ -6,80 +6,55 @@ use Slim;
 class Application {
 
 	private $slim;
-	private $route;
-	private $action;
+	private $config;
 
-	public function __construct()
+	public function __construct(\Slim\Slim &$slim)
 	{
-		$this->slim = new \Slim\Slim([
-			'mode' => ENVIRONMENT,
-			'debug'=> (ENVIRONMENT == 'development'),
-			'view' => new Slim\Views\Twig(),
-			'templates.path' => MODULE_PATH. '/views'
-		]);
+		$this->slim = $slim;
+		$this->slim->setName(MODULE);
 	}
 
-	public function getController($path)
+	public function configureRoutes()
 	{
-		$this->route  = 'index';
-		$this->action = 'index';
+		$slim = $this->slim;
 
-		if(strpos($path, '?')) {
-			$path = strstr($path, '?', true);
-		}
+		$routes = require(MODULE_PATH . '/config/routes.php');
 
-		if($path != '/'){
-			$parts = explode('/', $path);
+		foreach ($routes as $data) {
 
-			$this->route = strtolower($parts[1]);
+			$method = key($data);
+			$route = current($data);
 
-			if(isset($parts[2])) {
-				if($parts[2] == '' || is_numeric($parts[2])){
-					$this->action = 'index';
-				}else{
-					$this->action = strtolower(str_replace('-','_',$parts[2]));
+			$path = $route[0];
+			$resource = $route[1];
+			$action = $route[2];
+
+			$this->slim->{$method}($path, function () use($slim, $resource, $action) {
+
+				$class = sprintf('Nmr\%s\Controller\%sController', ucfirst(MODULE), $resource);
+
+				if (!class_exists($class)) {
+					throw new \Nmr\Exception\ServerErrorException("Controller '{$class}'' does not exist");
 				}
-			}
+
+				$controller = new $class($slim);
+
+				//set default view template to "[module]/views/[resource]/[action]"
+				$controller->setDefaultViewTemplate($resource , $action);
+
+				if (!method_exists($controller, $action)) {
+					throw new \Nmr\Exception\ServerErrorException("Method '{$action}' does not exist");
+				}
+
+				call_user_func_array([$controller, $action], func_get_args());
+			});
 		}
 
 		return $this;
 	}
 
-	public function getRoute()
-	{
-		return $this->route;
-	}
-
-	public function getAction()
-	{
-		return $this->action;
-	}
-
 	public function run()
 	{
-		$class = sprintf('Nmr\%s\Controller\%sController', ucfirst(MODULE), ucfirst($this->route));
-
-		if(!class_exists($class)){
-			$this->error($class . ' not found', 404);
-		}else{
-			//Instantiate Controller Class
-			$controller = new $class($this->slim, $this->route, $this->action);
-			if(!method_exists($controller, $this->action)){
-				$this->error("$class::" . $this->action . "(). Method Not Found.", 404);
-			}else{
-
-				$controller->{$this->action}();
-				$this->slim->run();
-			}
-		}
-	}
-
-	private function error($message, $code)
-	{
-		if(ENVIRONMENT == 'development'){
-			$this->slim->render("errors/{$code}.html", ['message' => $message], $code);
-		}else{
-			$this->slim->run();
-		}
+		$this->slim->run();
 	}
 }

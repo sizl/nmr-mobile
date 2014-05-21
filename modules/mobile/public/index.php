@@ -2,4 +2,4 @@
 
 define('MODULE', 'mobile');
 
-require dirname(__FILE__) . '/../../../initialize.php';
+require __DIR__ . '/../initialize.php';

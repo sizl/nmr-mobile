@@ -1,9 +1,12 @@
 <?php
 
-define('APP_ROOT', dirname(dirname(__FILE__)));
+define('APP_ROOT', dirname(__DIR__));
+
+define('MODULE', 'mobile');
 
 require APP_ROOT . '/vendor/autoload.php';
 require APP_ROOT . '/config/config.php';
 
-//include environment specific configs
-require APP_ROOT . '/config/' . ENVIRONMENT . '.php';
+define('ENVIRONMENT', 'development');
+define('MODULE_PATH', APP_ROOT . '/modules/' . MODULE);
+

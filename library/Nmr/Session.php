@@ -6,6 +6,7 @@ use Nmr\ApiClient;
 class Session {
 
 	private $api;
+	protected $facebook;
 
 	public function __construct(ApiClient $api)
 	{
@@ -23,6 +24,7 @@ class Session {
 	public function getCustomer()
 	{
 		$session_id = $this->getSessionId();
+
 		$result = $this->api->get('/customersession', ['session_id' => $session_id]);
 
 		if(isset($result['data']['customer'])){
@@ -32,19 +34,20 @@ class Session {
 		return false;
 	}
 
-	public function isAuthenticated()
-	{
-		return $this->hasCookie();
-	}
-
 	public function getFacebookUid()
 	{
-		if(isset($_COOKIE['fbsr_' . Facebook::APP_ID])){
-			$facebook = \Nmr\Facebook::instance();
+		$facebook = $this->getFacebook();
+
+		if ($facebook->hasFbAppCookie()) {
 			return $facebook->getUser();
 		}
 
 		return 0;
+	}
+
+	public function getCookie()
+	{
+		return $_COOKIE;
 	}
 
 	public function validateLogin($post, &$error)
@@ -65,12 +68,34 @@ class Session {
 	public function prepareAuthPost(&$post)
 	{
 		//set ip of client
-		$post['ip_address'] = $_SERVER['REMOTE_ADDR'];
+		$post['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
 
 		//set cookie if present
 		if($this->hasCookie()){
-			$post['session_id'] = $_COOKIE['NMRSESSID'];
+			$post['session_id'] = $this->getSessionId();
 		}
+	}
+
+	public function destroy()
+	{
+		if(isset($_COOKIE['PHPSESSID'])){
+			session_id($_COOKIE['PHPSESSID']);
+
+			if (session_status() === PHP_SESSION_ACTIVE) {
+				session_destroy();
+			}
+
+			setcookie ("PHPSESSID", "", time() - 3600, '/');
+		}
+
+		if(isset($_COOKIE['NMRSESSID'])){
+			setcookie ("NMRSESSID", "", time() - 3600, '/');
+		}
+	}
+
+	public function isAuthenticated()
+	{
+		return $this->hasCookie();
 	}
 
 	public function hasCookie()
@@ -83,24 +108,20 @@ class Session {
 		return $_COOKIE['NMRSESSID'];
 	}
 
-	public function setCookie($session_id)
+	public function setSessionCookie($session_id)
 	{
 		setcookie("NMRSESSID", $session_id, time()+3600 ,'/');
 	}
 
-	public function destroy()
+	public function setFacebook($facebook)
 	{
-		if(isset($_COOKIE['PHPSESSID'])){
-			session_id($_COOKIE['PHPSESSID']);
+		$this->facebook = $facebook;
+	}
 
-			if (session_status() !== PHP_SESSION_ACTIVE) {
-				session_start();
-			}
-
-			session_destroy();
-
-			setcookie ("PHPSESSID", "", time() - 3600, '/');
-			setcookie ("NMRSESSID", "", time() - 3600, '/');
-		}
+	public function getFacebook()
+	{
+		$config = require APP_ROOT . '/config/config.php';
+		$this->facebook = new \Nmr\FacebookClient($config['facebook']);
+		return $this->facebook;
 	}
 }

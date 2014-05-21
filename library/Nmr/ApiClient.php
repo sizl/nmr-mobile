@@ -4,10 +4,16 @@ namespace Nmr;
 
 class ApiClient {
 
-	const API_BASE = 'http://kevapi.qa.nomorerack.com';
-	const API_KEY = 'MekDavJupsyitegyayHaskirdyicboot';
+	private $debug;
+	private $apiBase;
+	private $apiKey;
 
-	public function __construct() {}
+	public function __construct($config)
+	{
+		$this->apiBase = $config['apiBase'];
+		$this->apiKey = $config['apiKey'];
+		$this->debug = $config['debug'];
+	}
 
 	public function get($path, array $params = [])
 	{
@@ -29,15 +35,25 @@ class ApiClient {
 		$handle = curl_init($uri);
 		curl_setopt_array($handle, $options);
 		$output = curl_exec($handle);
-		curl_close($handle);
 
-		if(!empty($output)){
+		if (!empty($output)) {
 			$result = json_decode($output, true);
+
 			if(is_array($result)){
+				curl_close($handle);
 				return $result;
 			}
 		}
 
+		//If API call fails, get check if the status code is not 200
+		//and return the header output in JSON response
+		$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+
+		if ($httpCode != 200) {
+			$output = get_headers($uri, 1);
+		}
+
+		curl_close($handle);
 		//catch-all debug response
 		return $this->debugResponse($uri, $options, $output);
 	}
@@ -45,10 +61,9 @@ class ApiClient {
 	private function getOptions($options=null)
 	{
 		$defaults = [
-			CURLOPT_VERBOSE => true,
 			CURLOPT_CONNECTTIMEOUT => 5,
 			CURLOPT_TIMEOUT => 5,
-			CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
+			CURLOPT_USERAGENT => 'Nomorerack Mobile Web Client',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_SSL_VERIFYPEER => false
 		];
@@ -67,8 +82,8 @@ class ApiClient {
 	private function buildUri($path)
 	{
 		$glue = $this->glue($path);
-		$path .= $glue . 'api_key=' . self::API_KEY;
-		return self::API_BASE . $path;
+		$path .= $glue . 'api_key=' . $this->apiKey;
+		return $this->apiBase . $path;
 	}
 
 	private function appendQueryParams($path, $params)
@@ -106,6 +121,11 @@ class ApiClient {
 			$request['method'] = 'GET';
 		}
 
-		return ['error' => 1, 'message' => 'API request failed', 'request' => $request, 'output' => $output];
+		return [
+			'error' => 1,
+			'message' => 'API request failed',
+			'request' => $request,
+			'output'  => $output
+		];
 	}
 }

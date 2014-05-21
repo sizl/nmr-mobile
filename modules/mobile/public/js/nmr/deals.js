@@ -48,7 +48,7 @@
             }).error(function(xhr, status, msg) {
                 self.error = true;
                 //alert('An error occurred when tyring to load more deals');
-                console.log(status, msg);
+                //console.log(status, msg);
             }).always(function(){
                 self.loading = false;
             });
@@ -56,14 +56,13 @@
 
         getPageUrl: function() {
 
-            var url = '/deals';
-
-            this.page++;
+            var url = '/deals/fetch?page=' + this.page + '&limit=' + this.limit;
 
             if(this.category) {
-                url += '/category/' + this.category;
+                url += '&category=' + this.category;
             }
-            url += '?page=' + this.page + '&limit=' + this.limit;
+
+            this.page++;
 
             return url;
         },

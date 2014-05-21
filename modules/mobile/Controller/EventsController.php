@@ -11,7 +11,7 @@ class EventsController extends \Nmr\Application\Controller {
 	{
 		$this->route('get', function() {
 
-			$limit = 2;
+			$limit = 50;
 
 			$Events = new Events();
 			$events = $Events->fetch(0, $limit);

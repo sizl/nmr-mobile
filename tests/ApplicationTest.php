@@ -2,66 +2,42 @@
 
 class ApplicationTest extends PHPUnit_Framework_TestCase {
 
-	public function testIndex()
+	protected $slim;
+	protected $app;
+
+	public function setUp()
 	{
-		//makes sure that framework calls index/index if no path is given
-		//e.g. if they type m.nmr.com (w/ no uri), it should map to index/index
+		$this->slim = new \Slim\Slim(array(
+			'version'        => '0.0.0',
+			'debug'          => false,
+			'mode'           => 'testing',
+			'templates.path' => MODULE_PATH. '/views'
+		));
 
-		$app = new \Nmr\Application();
-		$app->getController('/');
-
-		$this->assertEquals('index', $app->getRoute());
-		$this->assertEquals('index', $app->getAction());
-
+		$this->app = new \Nmr\Application($this->slim);
 	}
 
-	public function testPaths()
+	public function testRoutesDoNotThrowException()
 	{
-		//makes sure that framework calls route/index if no action is given
-		$app = new \Nmr\Application();
-		$app->getController('/checkout/');
+		$routes = require_once(MODULE_PATH . '/config/routes.php');
 
-		$this->assertEquals('checkout', $app->getRoute());
-		$this->assertEquals('index', $app->getAction());
+		foreach ($routes as $data) {
 
-	}
+			$route = current($data);
+			$resource = $route[1];
+			$action = $route[2];
 
-	public function testIdPath()
-	{
-		//makes sure that framework calls route/index if id is given
-		//direcly after path
+			$class = sprintf('Nmr\%s\Controller\%sController', ucfirst(MODULE), $resource);
 
-		$app = new \Nmr\Application();
-		$app->getController('/products/12142');
+			if (!class_exists($class)) {
+				throw new \Exception("Controller '{$class}'' does not exist");
+			}
 
-		$this->assertEquals('products', $app->getRoute());
-		$this->assertEquals('index', $app->getAction());
+			$controller = new $class($this->slim);
 
-	}
-
-	public function testControllerActionPath()
-	{
-		//makes sure that framework calls route/index if id is given
-		//direcly after path
-
-		$app = new \Nmr\Application();
-		$app->getController('/products/view');
-
-		$this->assertEquals('products', $app->getRoute());
-		$this->assertEquals('view', $app->getAction());
-
-	}
-
-	public function testControllerActionWithIdPath()
-	{
-		//makes sure that framework calls route/index if id is given
-		//direcly after path and that trailing paths do not affect route/action
-
-		$app = new \Nmr\Application();
-		$app->getController('/products/view/121412');
-
-		$this->assertEquals('products', $app->getRoute());
-		$this->assertEquals('view', $app->getAction());
-
+			if (!method_exists($controller, $action)) {
+				throw new \Exception("Method '{$action}' does not exist");
+			}
+		}
 	}
 }

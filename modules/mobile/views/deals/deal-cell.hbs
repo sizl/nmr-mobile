@@ -1,12 +1,12 @@
 {{#each deals}}
 <div class="grid-cell">
-    <a href="{{url}}" class="view-product"><div class="grid-image">
+    <a href="/deals/{{url}}" class="view-product"><div class="grid-image">
         <div class="btm-grad"></div>
         <div class="savings">
             <span class="save">Save</span>
-            <span class="percent">{{savings}}</span>
+            <span class="percent">{{savings}}%</span>
         </div>
-        <img src="{{image}}" alt="{{title}}" />
+        <img src="{{image}}" alt="{{name}}" />
         <span class="category">{{category}}</span>
     </div>
     <div class="grid-desc">
@@ -15,7 +15,7 @@
             <span class="retail">${{retail}}</span>
         </div>
         <div class="grid-title">
-            {{title}}
+            {{name}}
         </div>
         <!--<div>-->
             <!--<button data-role="button" data-mini="true" data-icon="search" class="nmr-green">View Deal</button>-->

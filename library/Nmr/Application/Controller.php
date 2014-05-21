@@ -8,63 +8,51 @@ use Handlebars\Handlebars;
 
 class Controller {
 
-	/*
-	 * Slim Instance
-	 */
-	protected $app;
-
-	/*
-	 * Route String
-	 */
-	protected $route;
-
-	/*
-	 * Current Controller
-	 */
-	protected $controller;
-
-	/*
-	 * Current Action
-	 */
-	protected $action;
-
-	/*
-	 * View Data
-	 */
+	protected $slim;
+	protected $config;
 	protected $data = [];
-
-	/*
-	 * Api Client
-	 */
-
 	protected $api;
-
-	/*
-	 * Session Handler
-	 */
-
 	protected $session;
-
 	protected $handlebars;
+	protected $defaultTemplate;
+	protected $template;
 
-	public function __construct(Slim $app, $controller, $action)
+	public function __construct(Slim $slim)
 	{
-		$this->app = $app;
+		$this->slim = $slim;
+		$this->config = require(APP_ROOT . '/config/config.php');
 
-		$this->action = $action;
-		$this->controller = $controller;
-
-		$this->api = new Nmr\ApiClient();
+		$this->api = new Nmr\ApiClient($this->config['api']);
 		$this->session = new Nmr\Session($this->api);
 
-		$this->setupRoute();
 		$this->setCustomer();
 		$this->setJsOptions();
 	}
 
+	private function getConfig($key)
+	{
+		return $this->config[$key];
+	}
+
+	public function requireSession($callback)
+	{
+		if($this->session->hasCookie()){
+			call_user_func($callback, $_COOKIE['NMRSESSID']);
+		}else{
+			$result = $this->api->post('/customersession');
+
+			if($result['error'] == 0){
+				$this->session->setSessionCookie($result['data']['session_id']);
+				call_user_func($callback, $result['data']['session_id']);
+			}else{
+				$this->renderJson(['status' => 1 , 'error' => 'Could not obtain session']);
+			}
+		}
+	}
+
 	private function setCustomer()
 	{
-		$fb_uid = $this->session->getFacebookUid();
+		$fb_uid = $this->session->getFacebookUid($_COOKIE);
 		$customer = $this->session->defaultCustomer();
 		$customer['fb_uid'] = $fb_uid;
 
@@ -82,35 +70,13 @@ class Controller {
 
 	private function setJsOptions()
 	{
+		$fbConfig = $this->getConfig('facebook');
+
 		$this->data['facebook'] = [
-			'appId' => \Nmr\Facebook::APP_ID,
-			'permissions' => \Nmr\Facebook::$permissions,
-			'fields' => \Nmr\Facebook::$fields
+			'appId' => $fbConfig['appId'],
+			'permissions' => $fbConfig['permissions'],
+			'fields' => $fbConfig['userFields']
 		];
-	}
-
-	private function setupRoute()
-	{
-		$route = '/';
-		if($this->controller != 'index'){
-			$route .= $this->controller;
-		}
-		if($this->action != 'index'){
-			$route .= '/'. $this->action;
-		}
-
-		$this->route = $route;
-	}
-
-	public function route($method, $params = '', $callback = '')
-	{
-		if(is_callable($params)){
-			$callback = $params;
-		}else if(!empty($params)){
-			$this->route .= $params;
-		}
-
-		$this->app->$method($this->route, $callback);
 	}
 
 	/*
@@ -120,46 +86,37 @@ class Controller {
 	 */
 	public function render($template='', array $data = [])
 	{
-		//$data provided as first parameter. use scaffolded template
-		//and merge data to global view data
-		if(is_array($template) && !empty($template) && empty($data)) {
-			$this->data = array_merge($this->data, $template);
-			$template = $this->controller . '/' . $this->action . '.html';
-			$this->app->render($template, $this->data);
-			return;
-		}
-
-		//render scaffolded view template
-		if(empty($template) && empty($data)){
-			$template = $this->controller . '/' . $this->action . '.html';
-			$this->app->render($template, $this->data);
-			return;
-		}
-
 		//render alternate view template and merge view data if present
-		if(!is_array($template)){
-			if(!empty($data)){
+		if (is_string($template)) {
+
+			if (is_array($data)) {
 				$this->data = array_merge($this->data, $data);
 			}
-			$this->app->render($template, $this->data);
+
+			$this->template = $template;
+
+			$this->slim->render($template, $this->data);
 			return;
 		}
+
+		//render default template with view data
+		if (is_array($template)) {
+			$this->data = array_merge($this->data, $template);
+		}
+
+		$this->template = $this->defaultTemplate;
+
+		$this->slim->render($this->defaultTemplate, $this->data);
 	}
 
-	public function requireSession($callback)
+	public function getTemplate()
 	{
-		if($this->session->hasCookie()){
-			call_user_func($callback, $_COOKIE['NMRSESSID']);
-		}else{
-			$result = $this->api->post('/customersession');
+		return $this->template;
+	}
 
-			if($result['error'] == 0){
-				$this->session->setCookie($result['data']['session_id']);
-				call_user_func($callback, $result['data']['session_id']);
-			}else{
-				$this->renderJson(['status' => 1 , 'error' => 'Could not obtain session']);
-			}
-		}
+	public function setDefaultViewTemplate($controller, $action)
+	{
+		$this->defaultTemplate = strtolower($controller) . '/' . strtolower($action) . '.html';
 	}
 
 	public function renderJson($data)
@@ -167,16 +124,6 @@ class Controller {
 		header('Content-Type: application/json');
 		print json_encode($data);
 		exit(0);
-	}
-
-	public function isAjax()
-	{
-		return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-	}
-
-	public function isPost()
-	{
-		return ($_SERVER['REQUEST_METHOD'] === 'POST');
 	}
 
 	protected function getHandlebarsTemplate($template_name)
@@ -193,5 +140,8 @@ class Controller {
 		return $this->handlebars->render($template, $data);
 	}
 
-
+	protected function getPost()
+	{
+		return $this->slim->request->post();
+	}
 }

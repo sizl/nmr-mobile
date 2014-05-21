@@ -21,9 +21,9 @@ NMR.DealView.init();
             </div>
             <div class="savings">
                 <span class="save">Save</span>
-                <span class="percent">{{deal.savings}}</span>
+                <span class="percent">{{deal.savings}}%</span>
             </div>
-            <div class="title">{{deal.title}}</div>
+            <div class="title">{{deal.name}}</div>
         </div>
 
         <div id="gallery-container">
@@ -65,6 +65,7 @@ NMR.DealView.init();
                     </select>
                     <input type="submit" data-role="button" data-icon="plus" data-iconpos="right" class="nmr-green" value="Add to Cart" />
                     <input type="hidden" name="deal_id" value="{{deal.deal_id}}" />
+                    <input type="hidden" name="product_id" value="{{deal.product_id}}" />
                 </div>
             </form>
         </div>
