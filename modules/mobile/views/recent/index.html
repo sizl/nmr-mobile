@@ -1,0 +1,43 @@
+{% extends "layouts/default.html" %}
+
+{% block body %}
+
+<div id="checkout-container" data-role="page">
+
+    {% include 'partials/headers/main-header.html' %}
+
+    <div data-role="content" class="checkout">
+
+        <div class="empty-cart"{% if recent.count == 0 %} style="display:block;"{% endif %}>
+            <h3>No Recently Viewed Items</h3>
+        </div>
+
+        <div class="cart-info"{% if recent.count == 0 %} style="display:none;"{% endif %}>
+             <h3>Recently Viewed Items</h3>
+            {% for key,item in recent.items %}
+            <div class="cart-item" id="item_{{item.product_id}}">
+                <div class="item-title">
+                    {{item.name}}
+                </div>
+                <div class="img-holder">
+                    <img src="{{item.image}}" />
+                </div>
+                <div class="item-summary">
+
+                    <ul class="attrs">
+                        <li><b>Price:</b> ${{item.price}}</li>
+                        <li><b>Savings:</b> ${{item.savings}}%</li>
+                        <li><b>Last Viewed:</b> {{item.updated_on}}</li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% include 'partials/slide-nav.html' %}
+</div>
+
+
+{% endblock %}

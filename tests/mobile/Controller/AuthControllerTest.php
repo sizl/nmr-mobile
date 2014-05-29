@@ -7,6 +7,9 @@ class AuthControllerTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp()
 	{
+		if (session_status() == PHP_SESSION_ACTIVE) {
+			session_destroy();
+		}
 		$this->slim = new \Slim\Slim([
 			'mode' => ENVIRONMENT,
 			'debug'=> (ENVIRONMENT == 'development'),

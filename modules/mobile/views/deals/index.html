@@ -13,6 +13,7 @@ NMR.Deals.init({{js_options|json_encode()|raw}});
 {% block body %}
 <div id="deals" data-role="page">
     {% include 'partials/headers/main-header.html' %}
+    {% include 'partials/search.html' %}
     {% include 'deals/deals-container.html' with {page_options: page_options} %}
     {% include 'partials/footer.html' %}
     {% include 'partials/slide-nav.html' %}

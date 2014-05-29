@@ -37,7 +37,7 @@ class AuthController extends \Nmr\Application\Controller {
 		//Login was successful
 		if(!empty($result['data']['session_id'])){
 
-			$this->session->setSessionCookie($result['data']['session_id']);
+			$this->session->createUserSession($result['data']);
 
 			$this->renderJson([
 				'status' => 0,
@@ -64,7 +64,7 @@ class AuthController extends \Nmr\Application\Controller {
 		$post['customer']['ip_address'] = isset($_SERVER['REMOTE_ADDR'])
 			? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
 
-		if($this->session->hasCookie()){
+		if($this->session->hasSessionCookie()){
 			$post['session_id'] = $this->session->getSessionId();
 		}
 
@@ -86,7 +86,7 @@ class AuthController extends \Nmr\Application\Controller {
 		//registration was successful. got session id back
 		if (!empty($result['data']['session_id'])) {
 
-			$this->session->setSessionCookie($result['data']['session_id']);
+			$this->session->createUserSession($result['data']);
 
 			$this->renderJson([
 				'status' => 0,
@@ -113,7 +113,9 @@ class AuthController extends \Nmr\Application\Controller {
 		$result = $this->api->post('/loginoauth', $post);
 
 		if($result['error'] == 0 && isset($result['data']['session_id'])){
-			$this->session->setSessionCookie($result['data']['session_id']);
+
+			$this->session->createUserSession($result['data']);
+
 			$this->renderJson(['status' => 0, 'customer' => $result['data']['customer']]);
 		}else{
 			$this->renderJson(['status' => 1, 'error' => $result['message']]);
@@ -122,9 +124,11 @@ class AuthController extends \Nmr\Application\Controller {
 
 	public function logout()
 	{
-		if ($this->session->hasCookie()) {
+		if ($this->session->hasSessionCookie()) {
 
-			$result = $this->api->post('/logout', ['session_id' => $this->session->getSessionId()]);
+			$sessionId = $this->session->getSessionId();
+
+			$result = $this->api->post('/logout', ['session_id' => $sessionId]);
 
 			if($result['error'] == 0){
 				$this->session->destroy();

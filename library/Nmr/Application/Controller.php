@@ -36,33 +36,38 @@ class Controller {
 
 	public function requireSession($callback)
 	{
-		if($this->session->hasCookie()){
+		if ($this->session->hasSessionCookie()) {
+			//Is cookied user. Get API Session Id
 			call_user_func($callback, $_COOKIE['NMRSESSID']);
-		}else{
-			$result = $this->api->post('/customersession');
+		} else {
 
-			if($result['error'] == 0){
+			//Create new Session
+			$result = $this->api->post('/customersession');
+			if($result['error'] == 0 && !empty($result['data']['session_id'])){
 				$this->session->setSessionCookie($result['data']['session_id']);
 				call_user_func($callback, $result['data']['session_id']);
 			}else{
-				$this->renderJson(['status' => 1 , 'error' => 'Could not obtain session']);
+				if ($this->slim->request->isAjax()) {
+					$this->renderJson(['status' => 1 , 'error' => 'Could not obtain session']);
+				} else {
+					$this->slim->notFound();
+				}
 			}
 		}
 	}
 
 	private function setCustomer()
 	{
-		$fb_uid = $this->session->getFacebookUid($_COOKIE);
 		$customer = $this->session->defaultCustomer();
+		$fb_uid = $this->session->getFacebookUid();
 		$customer['fb_uid'] = $fb_uid;
 
-		if ($this->session->isAuthenticated()) {
-			$logged_in_user = $this->session->getCustomer();
-			if (!empty($logged_in_user)) {
-				$customer = $logged_in_user;
-				$customer['authenticated'] = true;
-				$customer['fb_uid'] = $fb_uid;
-			}
+		$logged_in_user = $this->session->getCustomer();
+
+		if (!empty($logged_in_user)) {
+			$customer = $logged_in_user;
+			$customer['authenticated'] = true;
+			$customer['fb_uid'] = $fb_uid;
 		}
 
 		$this->data['customer'] = $customer;
@@ -86,27 +91,24 @@ class Controller {
 	 */
 	public function render($template='', array $data = [])
 	{
+		//default to scaffolded view path
+		$this->template = $this->defaultTemplate;
+
 		//render alternate view template and merge view data if present
-		if (is_string($template)) {
-
-			if (is_array($data)) {
-				$this->data = array_merge($this->data, $data);
-			}
-
+		if (!empty($template) && is_string($template)) {
 			$this->template = $template;
-
-			$this->slim->render($template, $this->data);
-			return;
 		}
 
-		//render default template with view data
-		if (is_array($template)) {
+		//merge action view data into main view data
+		if (!empty($template) && is_array($template)) {
 			$this->data = array_merge($this->data, $template);
 		}
 
-		$this->template = $this->defaultTemplate;
+		if (!empty($data) && is_array($data)) {
+			$this->data = array_merge($this->data, $data);
+		}
 
-		$this->slim->render($this->defaultTemplate, $this->data);
+		$this->slim->render($this->template, $this->data);
 	}
 
 	public function getTemplate()

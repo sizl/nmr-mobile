@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block document_ready %}
-NMR.DealView.init();
+NMR.DealView.init({{js_options|json_encode|raw}});
 {% endblock %}
 
 {% block body %}
@@ -45,26 +45,32 @@ NMR.DealView.init();
 
         <div id="add-item-form-holder">
             <div id="form-message"{% if form.error != null %} class="error"{% endif %}>{% if form.error != null %}{{form.error}}{% endif %}</div>
-            <form id="add-item" method="post" action="/checkout">
+            <form id="add-item" method="post" action="" data-ajax="false">
                 <div class="attr-holder">
+
                     {% for attr, attribute in deal.attributes %}
+
                     <select name="attribute[{{attr}}]" data-mini="true" data-icon="{% if form.attribute[attr] == null %}minus unselected{% else %}check{% endif %}">
+                        {% if attribute|length == 1 %}
+                        <option value="{{attribute.0}}"selected>Item: {{attribute.0}}</option>
+                        {% else %}
                         <option value="">{{attr}}</option>
-                        {% for option in attribute %}
-                        <option value="{{option}}"{% if form.attribute[attr] == option %} selected{% endif %}>{{attr}}: {{option}}</option>
-                        {% endfor %}
+                            {% for option in attribute %}
+                        <option value="{{option}}">{{attr}}: {{option}}</option>
+                            {% endfor %}
+                        {% endif %}
                     </select>
                     {% endfor %}
                 </div>
                 <div class="add-item-btn-holder">
                     <select name="quantity" data-mini="true" data-icon="{% if form.quantity == null %}minus unselected{% else %}check{% endif %}">
                         <option value="">Quantity</option>
-                        {% for i in 1..quantity %}
+                        {% for i in 1..deal.max_order_quantity %}
                         <option value="{{i}}"{% if form.quantity == i %} selected{% endif %}>Quantity: {{i}}</option>
                         {% endfor %}
                     </select>
                     <input type="submit" data-role="button" data-icon="plus" data-iconpos="right" class="nmr-green" value="Add to Cart" />
-                    <input type="hidden" name="deal_id" value="{{deal.deal_id}}" />
+                    <input type="hidden" name="deal_item_id" value="{{deal.deal_item_id}}" />
                     <input type="hidden" name="product_id" value="{{deal.product_id}}" />
                 </div>
             </form>

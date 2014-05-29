@@ -26,6 +26,8 @@
 
     {% block scripts %}{% endblock %}
 
+    <!-- BEGIN DOCUMENT READY -->
+
     <script type="text/javascript">
         $(document).on('pageinit', function() {
             NMR.init({{customer|json_encode()|raw}});
@@ -33,5 +35,7 @@
             {% block document_ready %}{% endblock %}
         });
     </script>
+
+    <!-- END DOCUMENT READY -->
 </body>
 </html>

@@ -139,12 +139,7 @@ class SessionSpy extends \Nmr\Session {
 		return $this->NMRSESSID;
 	}
 
-	public function isAuthenticated()
-	{
-		return $this->hasCookie();
-	}
-
-	public function hasCookie()
+	public function hasSessionCookie()
 	{
 		return isset($this->NMRSESSID);
 	}

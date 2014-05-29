@@ -1,10 +1,12 @@
 (function (NMR) {
     NMR.DealView = {
 
+        deal: null,
         initialized: false,
 
-        init: function () {
+        init: function (options) {
 
+            this.deal_item_id = options.deal_item_id;
             this.form = $("#add-item");
             this.form_holder = $("#add-item-form-holder");
             this.form_message = $("#form-message");
@@ -14,6 +16,8 @@
             this.bindAddItemForm();
 
             this.initialized = true;
+
+            this.addToRecentlyViewed();
         },
 
         initTouchSlideShow: function() {
@@ -53,18 +57,20 @@
                     return false;
                 }
 
-                self.validateSelection($(this).serializeArray()).done(function(result) {
+                var post = $(this).serializeArray();
+
+                self.addToCart(post).done(function(result) {
                     if(result.status == 1) {
                         self.form_message.text('* ' + result.error).addClass('error');
                     }else{
-
-                        //window.location.href = '/checkout';
+                        self.form_message.empty().removeClass('error');
+                        window.location.href = '/cart';
                     }
                 });
             });
         },
 
-        validateSelection: function(post) {
+        addToCart: function(post) {
             return $.ajax({
                 url: '/cart/add',
                 type: 'post',
@@ -87,6 +93,18 @@
                     self.form_message.empty().removeClass('error');
                 }
             });
+        },
+
+        addToRecentlyViewed: function() {
+
+            if (NMR.User.authenticated) {
+                $.ajax({
+                    url: '/recent/add',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {deal_item_id: this.deal_item_id}
+                });
+            }
         }
     }
 })(NMR);

@@ -1,10 +1,10 @@
 {{#each events}}
 <div class="event-row">
     <div class="event-title">
-        <a href="{{url}}" >{{title}}</a>
+        <a href="{{url}}" data-ajax="false">{{title}}</a>
     </div>
     <div class="event-image">
-        <a href="{{url}}"><img src="{{image}}" alt="" border="0" /></a>
+        <a href="{{url}}"><img src="{{images.large}}" alt="" border="0" data-ajax="false" /></a>
     </div>
 </div>
 {{/each}}

@@ -1,15 +1,19 @@
 (function (NMR) {
     NMR.Deals = {
 
-        page: 1,
+        offset: 0,
         limit: 0,
         loading: false,
         error: false,
         category: null,
+        fetchUrl: null,
+        scrollStop: false,
 
         init: function (options) {
 
+            this.fetchUrl = options.fetchUrl;
             this.limit = options.limit;
+            this.offset = options.offset;
 
             if (options.category) {
                 this.category = options.category;
@@ -39,39 +43,32 @@
         fetchDeals: function() {
 
             var self = this;
-            var url = this.getPageUrl();
 
-            this.loading = true;
-
-            $.getJSON(url).done(function(result){
-                self.deals_container.append(self.cell_template({deals: result.deals}));
-            }).error(function(xhr, status, msg) {
-                self.error = true;
-                //alert('An error occurred when tyring to load more deals');
-                //console.log(status, msg);
-            }).always(function(){
-                self.loading = false;
-            });
-        },
-
-        getPageUrl: function() {
-
-            var url = '/deals/fetch?page=' + this.page + '&limit=' + this.limit;
+            var url = this.fetchUrl + '?offset=' + this.offset + '&limit=' + this.limit;
 
             if(this.category) {
                 url += '&category=' + this.category;
             }
 
-            this.page++;
+            this.offset += this.limit;
+            this.loading = true;
 
-            return url;
+            $.getJSON(url).done(function(result){
+                self.scrollStop = (result.count == 0);
+                self.deals_container.append(self.cell_template({deals: result.deals}));
+            }).error(function(xhr, status, msg) {
+                self.scrollStop = true;
+            }).always(function(){
+                self.loading = false;
+            });
         },
 
         infiniteScroll: function() {
             var self = this;
-            $(document).scroll(function(){
 
-                if (self.error) {
+            $(document).on('scroll.nmr', function(){
+
+                if (self.scrollStop) {
                     return;
                 }
 

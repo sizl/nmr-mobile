@@ -23,8 +23,11 @@ class Session {
 
 	public function getCustomer()
 	{
-		$session_id = $this->getSessionId();
+		if (!$this->hasSessionCookie()) {
+			return false;
+		}
 
+		$session_id = $this->getSessionId();
 		$result = $this->api->get('/customersession', ['session_id' => $session_id]);
 
 		if(isset($result['data']['customer'])){
@@ -71,7 +74,7 @@ class Session {
 		$post['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
 
 		//set cookie if present
-		if($this->hasCookie()){
+		if($this->hasSessionCookie()){
 			$post['session_id'] = $this->getSessionId();
 		}
 	}
@@ -93,12 +96,32 @@ class Session {
 		}
 	}
 
-	public function isAuthenticated()
+	public function createUserSession($data)
 	{
-		return $this->hasCookie();
+		$this->setSessionCookie($data['session_id']);
+
+		if (isset($data['customer']['id'])) {
+			$this->setCustomerIdCookie($data['customer']['id']);
+		}
 	}
 
-	public function hasCookie()
+	public function createCartSession($cartId)
+	{
+		$cookieLife = 604800; // one week
+		setcookie("scid", $cartId, time()+$cookieLife ,'/');
+	}
+
+	public function hasCartIdCookie()
+	{
+		return isset($_COOKIE['scid']);
+	}
+
+	public function getCartIdCookie()
+	{
+		return $_COOKIE['scid'];
+	}
+
+	public function hasSessionCookie()
 	{
 		return isset($_COOKIE['NMRSESSID']);
 	}
@@ -110,7 +133,25 @@ class Session {
 
 	public function setSessionCookie($session_id)
 	{
-		setcookie("NMRSESSID", $session_id, time()+3600 ,'/');
+		$cookieLife = 604800; // one week
+		setcookie("NMRSESSID", $session_id, time()+$cookieLife ,'/');
+	}
+
+	public function setCustomerIdCookie($customerId)
+	{
+		//set current customer id
+		$cookieLife = 604800; // one week
+		setcookie("ccid", $customerId, time()+$cookieLife ,'/');
+	}
+
+	public function getCustomerIdCookie()
+	{
+		return $_COOKIE['ccid'];
+	}
+
+	public function hasCustomerIdCookie()
+	{
+		return isset($_COOKIE['ccid']);
 	}
 
 	public function setFacebook($facebook)

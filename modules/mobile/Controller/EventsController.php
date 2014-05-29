@@ -3,66 +3,88 @@
 
 namespace Nmr\Mobile\Controller;
 use Nmr\Events;
-use Nmr\Deals;
 
 class EventsController extends \Nmr\Application\Controller {
 
+	protected $feed_limit = 24;
+
 	public function index()
 	{
-		$this->route('get', function() {
+		$Events = new Events($this->api);
+		$events = $Events->fetch(0, $this->feed_limit);
 
-			$limit = 50;
+		$cell_template = $this->getHandlebarsTemplate('events/event-cell.hbs');
+		$events_html = $this->renderHandlebars($cell_template, ['events' => $events]);
 
-			$Events = new Events();
-			$events = $Events->fetch(0, $limit);
-
-			$cell_template = $this->getHandlebarsTemplate('events/event-cell.hbs');
-			$events_html = $this->renderHandlebars($cell_template, ['events' => $events]);
-
-			$this->render([
-				'js_options' => ['limit' => $limit],
-				'page_options' => [
-					'cell_template' => $cell_template,
-					'events_html' => $events_html
-				]
-			]);
-		});
-
-		$this->route('get', '/:id/:seo_title', function($id, $seo_title) {
-
-			$limit = 4;
-
-			$Deals = new Deals();
-			$deals = $Deals->fetch(0, $limit);
-
-			$cell_template = $this->getHandlebarsTemplate('deals/deal-cell.hbs');
-			$deals_html = $this->renderHandlebars($cell_template, ['deals' => $deals]);
-
-			$this->render('deals/index.html', [
-				'js_options' => ['limit' => $limit, 'category' => 'all'],
-				'page_options' => [
-					'cell_template' => $cell_template,
-					'deals_html' => $deals_html
-				]
-			]);
-		});
+		$this->render([
+			'js_options' => [
+				'limit' => $this->feed_limit,
+				'offset' => count($events)
+			],
+			'page_options' => [
+				'cell_template' => $cell_template,
+				'events_html' => $events_html
+			]
+		]);
 	}
 
+	/*
+	 * Fetch more events
+	 */
 	public function fetch()
 	{
-		$this->route('get', '/:limit/:offset', function($limit, $offset) {
-			$Events = new Events();
-			$deals = $Events->fetch($limit, $offset);
-			$this->renderJson(['status' => 0, 'events' => $deals]);
-		});
+		$page = !empty($_GET['offset']) ? $_GET['offset'] : 0;
+		$limit = !empty($_GET['limit']) ? $_GET['limit'] : $this->feed_limit;
+		$offset = $page * $limit;
+
+		$Events = new Events($this->api);
+		$events = $Events->fetch($offset, $limit);
+
+		$this->renderJson([
+			'status' => 0,
+			'events' => $events,
+			'count' => count($events)
+		]);
 	}
 
-	public function find()
+	/*
+	 * Show deals for that event
+	 */
+	public function view($id)
 	{
-		$this->route('get', '/:deal_id', function($deal_id) {
-			$Deals = new Deals();
-			$deal = $Deals->find($deal_id);
-			$this->renderJson(['status' => 0, 'deal' => $deal]);
-		});
+		$Events = new Events($this->api);
+		$deals = $Events->fetchDeals($id);
+
+		$cell_template = $this->getHandlebarsTemplate('deals/deal-cell.hbs');
+		$deals_html = $this->renderHandlebars($cell_template, ['deals' => $deals]);
+
+		$this->render('deals/index.html', [
+			'js_options' => [
+				'fetchUrl' => '/events/'. $id . '/deals',
+				'limit' => $this->feed_limit,
+			],
+			'page_options' => [
+				'cell_template' => $cell_template,
+				'deals_html' => $deals_html
+			]
+		]);
+	}
+
+	/*
+	 * Fetch more deals for event (based on daily_deal_id)
+	 */
+	public function deals($id)
+	{
+		$offset = !empty($_GET['offset']) ? $_GET['offset'] : 0;
+		$limit = !empty($_GET['limit']) ? $_GET['limit'] : $this->feed_limit;
+
+		$Events = new Events($this->api);
+		$deals = $Events->fetchDeals($id, $offset, $limit);
+
+		$this->renderJson([
+			'status' => 0,
+			'deals' => $deals,
+			'count' => count($deals)
+		]);
 	}
 }

@@ -5,6 +5,7 @@ use Nmr\Deals;
 
 class DealsController extends \Nmr\Application\Controller {
 
+	//How many deals to show per query
 	protected $feed_limit = 24;
 
 	/*
@@ -19,7 +20,11 @@ class DealsController extends \Nmr\Application\Controller {
 		$deals_html = $this->renderHandlebars($cell_template, ['deals' => $deals]);
 
 		$this->render([
-			'js_options' => ['limit' => $this->feed_limit],
+			'js_options' => [
+				'fetchUrl' => '/deals/fetch',
+				'offset' => count($deals),
+				'limit' => $this->feed_limit
+			],
 			'page_options' => [
 				'cell_template' => $cell_template,
 				'deals_html' => $deals_html
@@ -35,12 +40,32 @@ class DealsController extends \Nmr\Application\Controller {
 		$Deals = new Deals($this->api);
 		$deal = $Deals->find($id);
 
-		$data = [
-			'quantity' => 5,
-			'deal' => $deal
+		$attributes = [];
+
+		if ($deal['attributes']) {
+			$attrs = array_keys($deal['attributes']);
+			foreach($attrs as $key) {
+				$attributes[$key] = 0;
+				if (count($deal['attributes'][$key]) == 1) {
+					$attributes[$key] = $deal['attributes'][$key][0];
+					continue;
+				}
+			}
+		}
+
+		//used to prepopulate add item form
+		$form = [
+			'quantity' => 1,
+			'attribute' => $attributes
 		];
 
-		$this->render($data);
+		$this->render([
+			'form' => $form,
+			'deal' => $deal,
+			'js_options' => [
+				'deal_item_id' => $deal['deal_item_id']
+			],
+		]);
 	}
 
 	/*
@@ -61,6 +86,31 @@ class DealsController extends \Nmr\Application\Controller {
 				'cell_template' => $cell_template,
 				'deals_html' => $deals_html
 			]
+		]);
+	}
+
+	public function search()
+	{
+		$search = '';
+
+		if (!isset($_GET['q']) || empty($_GET['q'])) {
+			$deals = [];
+		} else {
+			$search = $_GET['q'];
+			$Deals = new Deals($this->api);
+			$deals = $Deals->fetch(0, $this->feed_limit, false, $search);
+		}
+
+		$cell_template = $this->getHandlebarsTemplate('deals/deal-cell.hbs');
+		$deals_html = $this->renderHandlebars($cell_template, ['deals' => $deals]);
+
+		$this->render('deals/index.html', [
+			'js_options' => ['limit' => $this->feed_limit, 'search' => $search],
+			'page_options' => [
+				'cell_template' => $cell_template,
+				'deals_html' => $deals_html
+			],
+			'search_term' => $search
 		]);
 	}
 

@@ -1,0 +1,144 @@
+{% extends "layouts/default.html" %}
+
+{% block scripts %}
+<script src="/js/nmr/cart.js"></script>
+{% if user.authenticated == false %}
+<script src="/js/nmr/login.js"></script>
+{% endif %}
+{% endblock %}
+
+{% block document_ready %}
+    NMR.Cart.init({{js_options|json_encode|raw}});
+{% if user.authenticated == false %}
+    NMR.Login.init();
+{% endif %}
+{% endblock %}
+
+{% block body %}
+
+<div id="checkout-container" data-role="page">
+
+    {% include 'partials/headers/main-header.html' %}
+
+    <div data-role="content" class="checkout">
+
+        <div class="empty-cart"{% if cart.item_count == 0 %} style="display:block;"{% endif %}>
+            <h3>Your cart is empty</h3>
+            <div class="empty-cart-cta">
+                <a href="/recent">Recently viewed items</a>
+                <a href="/" data-role="button" class="nmr-green" data-ajax="false">Continue Shopping</a>
+            </div>
+        </div>
+
+        <div class="cart-info"{% if cart.item_count == 0 %} style="display:none;"{% endif %}>
+
+            <div class="cart-disclaimer">
+                Products are available on a <b><i>first come, first to check out basis</i></b>.
+                Items remain in your cart as you proceed to check-out, but don't take too long
+                as other customers might beat you to the punch!
+            </div>
+
+            <div id="row-items">
+                {% for item in cart.items %}
+                <div class="cart-item" id="item_{{item.id}}">
+                    <div class="img-holder">
+                        <img src="https://nmr.allcdn.net/images/products/{{item.product_id}}-1-tn.jpg" />
+                    </div>
+                    <div class="item-summary">
+                        <div class="item-title">
+                            {{item.name}}
+                            <!--<a href="#" class="edit-item" data-item-id="{{item.id}}" data-ajax="false">{{item.name}}</a>-->
+                        </div>
+                        <ul class="attrs">
+                            {% for attr, value in item.attributes %}
+                            <li><b>{{attr}}:</b> {{value}} </li>
+                            {% endfor %}
+                            <li><b>Price:</b> $<span class="item-price">{{item.price}}</span></li>
+                            <li><b>Shipping:</b> $<span class="item-shipping">{{item.shipping}}</span> | <b>Total:</b> $<span class="item-total">{{item.row_total}}</span></li>
+                        </ul>
+                        <div class="item-action">
+                            <select name="quantity" data-mini="true" data-inline="true" data-item-id="{{item.id}}">
+                                {% for q in 1..item.max_order_quantity %}
+                                <option value="{{q}}"{% if q == item.quantity %} selected{% endif %}>Qty: {{q}}</option>
+                                {% endfor %}
+                            </select>
+                            <a href="#confirm"
+                               data-rel="popup"
+                               data-role="button"
+                               data-inline="true"
+                               data-mini="true"
+                               data-icon="minus"
+                               data-iconpos="right"
+                               data-shopping-cart-item-id="{{item.id}}"
+                               class="remove-item">Remove</a>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="checkout-secure">
+                <b>nomorerack</b> uses a secure connection to process transactions.
+                your data is encrypted and credit card numbers are never saved.
+            </div>
+
+            <!-- check has credit -->
+            <div class="checkout-form-holder">
+                <div>
+                    You have $0.00 credit
+                </div>
+                <div>
+                    <input data-mini="true" data-inline="true" type="button" value="Apply" />
+                </div>
+            </div>
+            <!-- end credit -->
+            <div class="checkout-form-holder">
+                <div>
+                    <input data-mini="true" data-inline="true" type="text" placeholder="Promo Code" />
+                </div>
+                <div>
+                    <input data-mini="true" data-inline="true" type="submit" value="Redeem" />
+                </div>
+            </div>
+
+            <div class="summary-holder">
+                <table id="cart-summary">
+                    {{cart_summary_html|raw}}
+                </table>
+            </div>
+            <div class="checkout-row">
+                <a href="/" data-ajax="false">Continue Shopping</a>
+                <!--<a id="checkout-btn" href="#login" data-mini="true" data-rel="popup" data-inline="true" class="nmr-green checkout-btn" data-role="button">Checkout</a>-->
+                <button id="checkout-btn" href="#" data-mini="true" data-inline="true" class="nmr-green checkout-btn" data-role="button">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    {% if user.authenticated == false %}
+    <div id="login" data-role="popup">
+        {% include 'account/login-form.html' %}
+    </div>
+
+    <div id="auth-success" data-role="popup">
+        You are now logged in. Please proceed to checkout.
+    </div>
+    {% endif %}
+
+    {% include 'partials/slide-nav.html' %}
+    {% include 'shared/confirm.html' %}
+
+    <div id="edit-item-popup" data-role="popup"></div>
+
+</div>
+
+<script id="cart-items-template" type="application/x-handlebars-template">
+    {{cart_items_template|raw}}
+</script>
+
+<script id="cart-summary-template" type="application/x-handlebars-template">
+    {{cart_summary_template|raw}}
+</script>
+
+
+{% endblock %}

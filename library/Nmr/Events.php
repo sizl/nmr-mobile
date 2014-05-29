@@ -4,42 +4,42 @@ namespace Nmr;
 
 class Events {
 
-	public function fetch($offset=0, $limit = 3)
+	public $api;
+
+	public function __construct(ApiClient $api)
 	{
-		$events = $this->all();
-		return array_splice($events, $offset, $limit);
+		$this->api = $api;
 	}
 
-	public function all()
+	public function fetch($offset=0, $limit=25)
 	{
-		$events = require 'data/events.php';
+		$params = [
+			'offset'=> $offset,
+			'limit' => $limit
+		];
 
-		foreach($events as $id => $event) {
-			$events[$id]['url'] = "/events/" . $id . "/" . $this->sanitizeTitle($event['title']);
+		$result = $this->api->get('/events', $params);
+
+		if ($result['error'] == 0 && isset($result['data'])) {
+			return $result['data'];
 		}
 
-		return $events;
+		return [];
 	}
 
-	public function find($deal_id)
+	public function fetchDeals($daily_deal_id, $offset=0, $limit=12)
 	{
-		$deals = $this->all();
-		return $deals[$deal_id];
-	}
+		$params = [
+			'offset'=> $offset,
+			'limit' => $limit
+		];
 
-	//TODO: Make this a helper
-	function sanitizeTitle($string, $force_lowercase = true, $anal = false) {
-		$strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
-			"}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
-			"â€”", "â€“", ",", "<", ".", ">", "/", "?");
-		$clean = trim(str_replace($strip, "", strip_tags($string)));
-		$clean = preg_replace('/\s+/', "-", $clean);
-		$clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
+		$result = $this->api->get('/events/' . $daily_deal_id, $params);
 
-		return ($force_lowercase) ?
-			(function_exists('mb_strtolower')) ?
-				mb_strtolower($clean, 'UTF-8') :
-				strtolower($clean) :
-			$clean;
+		if ($result['error'] == 0 && isset($result['data'])) {
+			return $result['data'];
+		}
+
+		return [];
 	}
 }

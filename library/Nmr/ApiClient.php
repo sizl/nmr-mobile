@@ -29,6 +29,28 @@ class ApiClient {
 		return $this->curl($path, $options, $params);
 	}
 
+	public function delete($path, array $params = [])
+	{
+		$options = $this->getOptions([
+			CURLOPT_POST => false,
+			CURLOPT_CUSTOMREQUEST => 'DELETE'
+		]);
+
+		$options = $this->appendPostParams($options, $params);
+		return $this->curl($path, $options, $params);
+	}
+
+	public function put($path, array $params = [])
+	{
+		$options = $this->getOptions([
+			CURLOPT_POST => false,
+			CURLOPT_CUSTOMREQUEST => 'PUT'
+		]);
+
+		$options = $this->appendPostParams($options, $params);
+		return $this->curl($path, $options, $params);
+	}
+
 	private function curl($path, $options)
 	{
 		$uri = $this->buildUri($path);
@@ -115,17 +137,15 @@ class ApiClient {
 		$request = ['uri' => $uri];
 
 		if($options[CURLOPT_POST] == true){
-			$request['method'] = 'POST';
 			$request['params'] = $options[CURLOPT_POSTFIELDS];
-		}else{
-			$request['method'] = 'GET';
 		}
 
 		return [
 			'error' => 1,
 			'message' => 'API request failed',
 			'request' => $request,
-			'output'  => $output
+			'output'  => $output,
+			'options' => $options
 		];
 	}
 }
