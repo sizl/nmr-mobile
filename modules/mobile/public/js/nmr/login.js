@@ -35,7 +35,8 @@
 
                 NMR.submitLogin(email, password).done(function(result) {
                     if(result.status == 0){
-                        self.authCompleted(true);
+                        //self.authCompleted(true);
+                        window.location.href = '/';
                         self.error.text('').hide();
                     }else{
                         self.error.text(result.error).show();

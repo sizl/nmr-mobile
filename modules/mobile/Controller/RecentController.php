@@ -33,12 +33,12 @@ class RecentController extends \Nmr\Application\Controller {
 	{
 		$id = $_POST['deal_item_id'];
 		$Deals = new Deals($this->api);
-		$deal = $Deals->find($id);
+		$data = $Deals->find($id);
 
 		//add recently viewed to database if user is logged in
 		if ($this->session->hasSessionCookie()) {
 			$sessionId = $this->session->getSessionId();
-			$Deals->addToRecentlyViewed($deal, $sessionId);
+			$Deals->addToRecentlyViewed($data['deal'], $sessionId);
 		}
 
 		$this->renderJson([

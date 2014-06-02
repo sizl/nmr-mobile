@@ -10,9 +10,9 @@
             this.cart = options.cart || {};
             this.next_url = options.next_url;
 
+            this.auth_modal = $("#login");
             this.content = $("#checkout-container");
             this.checkout_btn = $("#checkout-btn");
-            this.auth_modal = $("#login");
             this.edit_modal = $("#edit-item-popup");
 
             this.cart_summary = $("#cart-summary");
@@ -24,8 +24,8 @@
             this.bindCheckoutForm();
         },
 
-        bindChangeQty: function()
-        {
+        bindChangeQty: function() {
+
             var self = this;
             this.content.find("select[name=quantity]").on('change', function(e) {
 
@@ -124,17 +124,12 @@
             });
 
             this.remove_confirm.find("button.confirm").on('click', function(e) {
-
                 self.checkout_btn.prop('disabled', true);
-
                 self.removeItem(self.shopping_cart_item_id).done(function(result) {
-
                     if (result.status == 0) {
-
-                        self.shopping_cart_item_id = null;
                         self.cart_summary.html(self.summary_template({cart: result.cart_summary}));
-
                         self.content.find('#item_' + self.shopping_cart_item_id).fadeOut(500, function() {
+                            self.shopping_cart_item_id = null;
                             //if there are no more items in cart, show the empty view
                             if(self.content.find('.cart-item').length === 0){
                                 self.content.find('.cart-info').fadeOut();

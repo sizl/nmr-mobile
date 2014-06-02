@@ -47,16 +47,14 @@ NMR.DealView.init({{js_options|json_encode|raw}});
             <div id="form-message"{% if form.error != null %} class="error"{% endif %}>{% if form.error != null %}{{form.error}}{% endif %}</div>
             <form id="add-item" method="post" action="" data-ajax="false">
                 <div class="attr-holder">
-
                     {% for attr, attribute in deal.attributes %}
-
-                    <select name="attribute[{{attr}}]" data-mini="true" data-icon="{% if form.attribute[attr] == null %}minus unselected{% else %}check{% endif %}">
+                    <select name="attribute[{{attr}}]" data-attr="{{attr}}" data-mini="true" data-icon="{% if form.attribute[attr] == null %}minus unselected{% else %}check{% endif %}">
                         {% if attribute|length == 1 %}
-                        <option value="{{attribute.0}}"selected>Item: {{attribute.0}}</option>
+                            <option value="{{attribute.0}}"selected>{{attribute.0}}</option>
                         {% else %}
-                        <option value="">{{attr}}</option>
+                            <option value="">{{attr}}</option>
                             {% for option in attribute %}
-                        <option value="{{option}}">{{attr}}: {{option}}</option>
+                                <option value="{{option}}">{{option}}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -71,6 +69,7 @@ NMR.DealView.init({{js_options|json_encode|raw}});
                     </select>
                     <input type="submit" data-role="button" data-icon="plus" data-iconpos="right" class="nmr-green" value="Add to Cart" />
                     <input type="hidden" name="deal_item_id" value="{{deal.deal_item_id}}" />
+                    <input type="hidden" name="product_item_id" value="" />
                     <input type="hidden" name="product_id" value="{{deal.product_id}}" />
                 </div>
             </form>

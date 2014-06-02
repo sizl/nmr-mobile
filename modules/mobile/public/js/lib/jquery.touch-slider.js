@@ -137,6 +137,10 @@
 				return options.mode == 'auto' ? graphItems.length : $(items).length;
 			};
 
+            this.setDuration = function(sec) {
+                options.duration = sec;
+            };
+
 			this.moveNext = function() {
 				switch(options.mode)
 				{

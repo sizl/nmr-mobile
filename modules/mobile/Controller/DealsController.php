@@ -38,7 +38,8 @@ class DealsController extends \Nmr\Application\Controller {
 	public function view($id, $seo_title)
 	{
 		$Deals = new Deals($this->api);
-		$deal = $Deals->find($id);
+		$data = $Deals->find($id);
+		$deal = $data['deal'];
 
 		$attributes = [];
 
@@ -63,7 +64,10 @@ class DealsController extends \Nmr\Application\Controller {
 			'form' => $form,
 			'deal' => $deal,
 			'js_options' => [
-				'deal_item_id' => $deal['deal_item_id']
+				'deal' => $deal,
+				'deal_item_id' => $deal['deal_item_id'],
+				'product_items' => $data['product_items'],
+				'image_map' => $data['image_map']
 			],
 		]);
 	}

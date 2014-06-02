@@ -47,14 +47,18 @@
                     <div class="item-summary">
                         <div class="item-title">
                             {{item.name}}
-                            <!--<a href="#" class="edit-item" data-item-id="{{item.id}}" data-ajax="false">{{item.name}}</a>-->
+                            <!-- show correct image -->
+                            <!-- <a href="#" class="edit-item" data-item-id="{{item.id}}" data-ajax="false">{{item.name}}</a>-->
+                            <!-- saving %s -->
+
                         </div>
                         <ul class="attrs">
                             {% for attr, value in item.attributes %}
                             <li><b>{{attr}}:</b> {{value}} </li>
                             {% endfor %}
-                            <li><b>Price:</b> $<span class="item-price">{{item.price}}</span></li>
-                            <li><b>Shipping:</b> $<span class="item-shipping">{{item.shipping}}</span> | <b>Total:</b> $<span class="item-total">{{item.row_total}}</span></li>
+                            <li><b>Unit Price:</b> $<span class="item-price">{{item.price}}</span></li>
+                            <li><b>Shipping:</b> $<span class="item-shipping">{{item.shipping}}</span></li>
+                            <li><b>Total:</b> $<span class="item-total">{{item.row_total}}</span></li>
                         </ul>
                         <div class="item-action">
                             <select name="quantity" data-mini="true" data-inline="true" data-item-id="{{item.id}}">
